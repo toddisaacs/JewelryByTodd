@@ -1,23 +1,27 @@
 /* Selected-option read-back, rhodium rule, and total.
 
-   The sterling base lives on the form as data-base="180".
-   Each choice's add-on lives on its input as data-price="40".
+   catalog.js writes the sterling price onto the form as data-base.
+   Each fixed add-on lives on its input as data-price="40".
    Use data-price="0" for an option that is part of the base.
-   Gold's data-price is the extra over sterling.
+   A gold data-price is the extra over the sterling price.
    Leave an attribute empty while that amount is still a blank.
    The total stays "No total yet" until the base and every selected
    add-on are numbers. Antique finish clears and disables rhodium.
 
-   The sterling weight lives on the form as data-grams="2.5".
-   Gold quotes follow that weight and the live spot.
-   Making charge = sterling price minus the silver in that weight.
+   The finished sterling weight lives on the form as data-grams="2.5".
+   Hours and the hourly rate live in the work list below, not on the page.
+   Company profit is 20% of labor plus metal. The page shows only the result.
+   The result is rounded to the nearest dollar and is the order price.
+
+   Labor = hours × rate.
+   Silver metal = sterling grams × 0.925 × (silver spot ÷ 31.1035).
    Finished gold grams = sterling grams × (density ÷ 10.36).
    14k yellow is 13.07. 18k yellow is 15.58.
    Fine gold grams = finished gold grams × 1.20 × (karat ÷ 24).
    The 1.20 is dust and filings that will not be refined.
-   Metal cost = fine gold grams × (gold spot per ounce ÷ 31.1035).
-   Quote = making charge + metal cost, rounded up to the next $25.
-   The add-on stored on the gold choice is the quote minus the sterling price.
+   Gold metal = fine gold grams × (gold spot ÷ 31.1035).
+   Price = nearest dollar of (labor + metal) × 1.20.
+   A gold add-on is that gold price minus the sterling price.
    If the live price does not load, the saved prices from October 22, 2026
    are gold $4,095/oz and silver $56.40/oz. */
 
@@ -128,20 +132,19 @@
     if (total) total.setAttribute("aria-live", "polite");
   });
 
-  /* Gold quotes. See the note at the top of this file. */
+  /* Price build. Hours and the rate stay off the page. */
 
   var TROY_GRAMS = 31.1034768;
   var STERLING_DENSITY = 10.36;
+  var STERLING_FINE = 0.925;
   var GOLD_LOSS = 1.2;
+  var COMPANY_PROFIT = 0.2;
   var GOLD_DENSITY = { 14: 13.07, 18: 15.58 };
+  var work = {
+    "traditional-bezel-options": { hours: 6, rate: 30 }
+  };
   var savedSpot = { gold: 4095, silver: 56.4, live: false };
   var spot = { gold: savedSpot.gold, silver: savedSpot.silver, live: false, pending: true };
-
-  function roundQuote(amount) {
-    var stepCents = 2500;
-    var cents = Math.round(amount * 100);
-    return Math.ceil((cents - 1) / stepCents) * stepCents / 100;
-  }
 
   function formatGrams(grams) {
     return (Math.round(grams * 10) / 10).toLocaleString("en-US", {
@@ -157,24 +160,39 @@
     });
   }
 
-  function goldQuote(grams, karat, goldOz, silverOz, silverRetail) {
-    var finished = grams * GOLD_DENSITY[karat] / STERLING_DENSITY;
-    var fine = finished * GOLD_LOSS * (karat / 24);
-    var making = silverRetail - grams * 0.925 * (silverOz / TROY_GRAMS);
-    var raw = making + fine * (goldOz / TROY_GRAMS);
-    var quote = roundQuote(raw);
-    return { finished: finished, quote: quote, addon: quote - silverRetail };
+  function perGram(ouncePrice) {
+    return ouncePrice / TROY_GRAMS;
+  }
+
+  function sellingPrice(labor, metal) {
+    return Math.round((labor + metal) * (1 + COMPANY_PROFIT));
   }
 
   function spotSentence(current) {
-    if (current.pending) return "Checking the gold price.";
+    if (current.pending) return "Checking the metal price.";
     var gold = formatSpot(current.gold, 0);
     var silver = formatSpot(current.silver, 2);
     if (current.live) return "Gold " + gold + " an ounce, silver " + silver + " an ounce.";
     return "The live metal price did not load. Using gold " + gold + " an ounce and silver " + silver + " an ounce from October 22.";
   }
 
-  function applyGold(setting, current) {
+  function clearMetalPrices(form, weights, message) {
+    delete form.dataset.base;
+    var silver = form.querySelector('input[name="metal"][value="silver"]');
+    var silverPrice = silver && silver.closest(".choice").querySelector(".choice-price");
+    if (silverPrice) silverPrice.textContent = "—";
+    form.querySelectorAll("input[data-karat]").forEach(function (input) {
+      delete input.dataset.price;
+      var choice = input.closest(".choice");
+      var price = choice && choice.querySelector(".choice-price");
+      var detail = choice && choice.querySelector(".choice-detail");
+      if (price) price.textContent = "—";
+      if (detail) detail.textContent = message;
+    });
+    if (weights) weights.textContent = message;
+  }
+
+  function applyPrices(setting, current) {
     var form = setting.querySelector(".options");
     var weights = setting.querySelector(".gold-weights");
     var spotLine = setting.querySelector(".spot");
@@ -182,39 +200,41 @@
 
     if (spotLine) spotLine.textContent = spotSentence(current);
 
-    var base = parseAmount(form.dataset.base);
+    var job = work[form.id];
     var grams = parseAmount(form.dataset.grams);
-    var goldInputs = form.querySelectorAll("input[data-karat]");
-    var usable = base !== null && grams !== null && grams >= 0.1 && grams <= 40;
-
-    if (!usable) {
-      goldInputs.forEach(function (input) {
-        delete input.dataset.price;
-        var choice = input.closest(".choice");
-        var price = choice && choice.querySelector(".choice-price");
-        var detail = choice && choice.querySelector(".choice-detail");
-        if (price) price.textContent = "—";
-        if (detail) detail.textContent = "Sterling weight is not set.";
-      });
-      if (weights) weights.textContent = "Sterling weight is not set.";
+    var ready = job && grams !== null && grams >= 0.1 && grams <= 40;
+    if (!ready) {
+      clearMetalPrices(form, weights, "Sterling weight is not set.");
       render(setting);
       return;
     }
 
+    var labor = job.hours * job.rate;
+    var silverMetal = grams * STERLING_FINE * perGram(current.silver);
+    var silverQuote = sellingPrice(labor, silverMetal);
+    form.dataset.base = String(silverQuote);
+    var silverInput = form.querySelector('input[name="metal"][value="silver"]');
+    var silverChoice = silverInput && silverInput.closest(".choice");
+    var silverPrice = silverChoice && silverChoice.querySelector(".choice-price");
+    if (silverPrice) silverPrice.textContent = formatDollars(silverQuote);
+
     var lines = [];
-    goldInputs.forEach(function (input) {
+    form.querySelectorAll("input[data-karat]").forEach(function (input) {
       var karat = Number(input.dataset.karat);
       if (!GOLD_DENSITY[karat]) return;
-      var quote = goldQuote(grams, karat, current.gold, current.silver, base);
-      input.dataset.price = String(quote.addon);
+      var finishedGrams = grams * GOLD_DENSITY[karat] / STERLING_DENSITY;
+      var fine = finishedGrams * GOLD_LOSS * (karat / 24);
+      var quote = sellingPrice(labor, fine * perGram(current.gold));
+      var addon = quote - silverQuote;
+      input.dataset.price = String(addon);
       var choice = input.closest(".choice");
       var price = choice && choice.querySelector(".choice-price");
       var detail = choice && choice.querySelector(".choice-detail");
-      var finished = formatGrams(quote.finished) + " g";
+      var finished = formatGrams(finishedGrams) + " g";
       if (price) {
-        price.textContent = quote.addon === 0 ? "Included" : (quote.addon > 0 ? "+" : "") + formatDollars(quote.addon);
+        price.textContent = addon === 0 ? "Included" : (addon > 0 ? "+" : "") + formatDollars(addon);
       }
-      if (detail) detail.textContent = "About " + finished + " finished. " + formatDollars(quote.quote) + " in " + karat + "k.";
+      if (detail) detail.textContent = "About " + finished + " finished. " + formatDollars(quote) + " in " + karat + "k.";
       lines.push(finished + " in " + karat + "k");
     });
 
@@ -247,7 +267,7 @@
     })
     .then(function () {
       document.querySelectorAll(".setting").forEach(function (setting) {
-        applyGold(setting, spot);
+        applyPrices(setting, spot);
       });
     });
 

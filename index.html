@@ -47,14 +47,14 @@
         The original 4K upload can stay on X.
 
         Prices (also read by catalog.js):
-        - Put the sterling base on the form as data-base="180" (digits only).
         - Put the finished sterling weight on the form as data-grams="2.5".
-        - Put each option's add-on on its input as data-price="40".
+        - Put hours and the hourly rate in the work list in catalog.js.
+          Do not write those, or the company profit, into the visible page.
+        - catalog.js fills the sterling price and the gold add-ons from the
+          live metal price. Leave data-base empty in the HTML.
+        - Put each fixed add-on on its input as data-price="40".
         - Options that are part of the base use data-price="0" once that is confirmed.
-        - Gold's data-price in the HTML is the fallback. catalog.js replaces it
-          from data-grams and the live metal price.
-        - Leave data-base and data-price empty while the amount is still a blank.
-        - Keep the visible amount and the data attribute the same.
+        - Leave data-price empty while a fixed add-on is still a blank.
       -->
       <article class="setting" id="traditional-bezel" tabindex="-1" aria-labelledby="traditional-bezel-title">
         <header class="setting-heading">
@@ -102,8 +102,8 @@
               <dd>
                 <p>2.5 g in sterling silver.</p>
                 <p class="gold-weights" id="traditional-bezel-gold-weights" aria-live="polite">About 3.2 g in 14k gold, and about 3.8 g in 18k gold.</p>
-                <p class="sample">Working weight. Gold weights and prices follow it, until a gold ring is weighed.</p>
-                <p class="spot" id="traditional-bezel-spot" aria-live="polite">Checking the gold price.</p>
+                <p class="sample">Working weight, until a finished gold ring is weighed.</p>
+                <p class="spot" id="traditional-bezel-spot" aria-live="polite">Checking the metal price.</p>
               </dd>
             </div>
             <div>
@@ -112,14 +112,8 @@
             </div>
           </dl>
 
-          <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="225" data-grams="2.5" action="#">
-            <p class="price-note">Included is part of the $225 sterling price: no skirt, and high polish. Gold follows the sterling weight and the current metal price. The total stays blank if antique is selected, because that add-on is not set.</p>
-
-            <!--
-              Gold prices are recalculated in catalog.js from this form's
-              data-base, data-grams, and the live spot.
-              The numbers below are the fallback if that script does not run.
-            -->
+          <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="" data-grams="2.5" action="#">
+            <p class="price-note">Included is part of the sterling price: no skirt, and high polish. The price shown is the price at the time of the order. It follows the metal price. The total stays blank if antique is selected, because that add-on is not set.</p>
             <fieldset>
               <legend>Metal</legend>
               <label class="choice">
@@ -127,23 +121,23 @@
                 <span class="choice-text">
                   <span class="choice-name">Sterling silver</span>
                 </span>
-                <span class="choice-price">$225</span>
+                <span class="choice-price">—</span>
               </label>
               <label class="choice">
-                <input type="radio" name="metal" value="gold-14k" data-karat="14" data-price="300">
+                <input type="radio" name="metal" value="gold-14k" data-karat="14">
                 <span class="choice-text">
                   <span class="choice-name">14k gold</span>
-                  <span class="choice-detail">Estimate, about 3.2 g finished. $525 in 14k.</span>
+                  <span class="choice-detail">Price loading.</span>
                 </span>
-                <span class="choice-price">+$300</span>
+                <span class="choice-price">—</span>
               </label>
               <label class="choice">
-                <input type="radio" name="metal" value="gold-18k" data-karat="18" data-price="450">
+                <input type="radio" name="metal" value="gold-18k" data-karat="18">
                 <span class="choice-text">
                   <span class="choice-name">18k gold</span>
-                  <span class="choice-detail">Estimate, about 3.8 g finished. $675 in 18k.</span>
+                  <span class="choice-detail">Price loading.</span>
                 </span>
-                <span class="choice-price">+$450</span>
+                <span class="choice-price">—</span>
               </label>
             </fieldset>
 
