@@ -41,8 +41,9 @@
 
         Photos: save files in images/<slug>/ and point each <img src> at the file.
         A still around 2 MB is a normal size.
-        Video: post it on X and embed the status with a blockquote.twitter-tweet.
-        Do not commit the video file. One widgets.js script in the page is enough.
+        Video: save an mp4 next to the stills and point a <video> at it.
+        A phone-sized copy, around 720p or 1080p, is the right file.
+        The original 4K upload can stay on X.
 
         Prices (also read by catalog.js):
         - Put the sterling base on the form as data-base="180" (digits only).
@@ -65,13 +66,10 @@
 
         <div class="setting-photos" id="traditional-bezel-photos" tabindex="-1">
           <figure class="photo photo-main">
-            <div class="video-frame">
-              <blockquote class="twitter-tweet" data-dnt="true" data-theme="light" data-lang="en">
-                <p lang="en" dir="ltr">Lab Alex traditional bezel setting.</p>
-                <a href="https://x.com/JewelryByTodd/status/2108680465028665771">Watch the Lab Alex traditional bezel on X</a>
-              </blockquote>
-            </div>
-            <figcaption>Lab Alex traditional bezel. The clip plays from X.</figcaption>
+            <video class="setting-video" controls playsinline preload="metadata">
+              <source src="images/traditional-bezel/lab-alex.mp4" type="video/mp4">
+            </video>
+            <figcaption>Lab Alex traditional bezel.</figcaption>
           </figure>
           <div class="photo-details">
             <figure class="photo photo-detail">
@@ -229,7 +227,6 @@
     </footer>
   </div>
 
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   <script src="catalog.js"></script>
 </body>
 </html>

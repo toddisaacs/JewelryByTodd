@@ -1,16 +1,16 @@
 The traditional bezel already has its media.
 
-Main view: the X clip
+Main view: lab-alex.mp4
+This is a 1080p copy of the Lab Alex clip, about 12 MB. The page shows that file in a video player. The original post is still at
 https://x.com/JewelryByTodd/status/2108680465028665771
-The video stays on X. The catalog only embeds it, so the video file is not stored here.
 
 Stills already on the page:
 IMG_4322.jpeg   front of the setting
 IMG_4321.jpeg   side view, rope edge and band
 
-A photo around 2 MB is a normal size for this site. The published catalog can hold up to 1 GB total. One file must stay under 100 MB, and GitHub warns above 50 MB.
+A photo around 2 MB is a normal size. A video around 10–15 MB is a normal size. The published catalog can hold up to 1 GB total. One file must stay under 100 MB, and GitHub warns above 50 MB.
 
 To add another still, put the JPG or JPEG in this folder and say which view it is.
-To add another video, post it on X and send the post link. Do not put the video file in this folder.
+To add another video, put an mp4 in this folder, or send an X link and a smaller copy can be saved here. Leave the original 4K file off the site.
 
 The share link for this setting is the catalog address plus #traditional-bezel.

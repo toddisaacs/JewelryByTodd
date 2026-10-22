@@ -243,16 +243,13 @@ h1 {
   aspect-ratio: 3 / 4;
 }
 
-.video-frame {
-  max-width: 100%;
-}
-
-.video-frame .twitter-tweet {
-  margin: 0;
-}
-
-.video-frame iframe {
-  max-width: 100% !important;
+.setting-video {
+  display: block;
+  width: min(100%, 26rem);
+  height: auto;
+  aspect-ratio: 9 / 16;
+  background: #1c2430;
+  object-fit: contain;
 }
 
 .setting-photos:focus,
