@@ -6,7 +6,19 @@
    Gold's data-price is the extra over sterling.
    Leave an attribute empty while that amount is still a blank.
    The total stays "No total yet" until the base and every selected
-   add-on are numbers. Antique finish clears and disables rhodium. */
+   add-on are numbers. Antique finish clears and disables rhodium.
+
+   Gold quotes follow the sterling weight and the live spot.
+   Making charge = sterling price minus the silver in that weight.
+   Finished gold grams = sterling grams × (density ÷ 10.36).
+   14k yellow is 13.07. 18k yellow is 15.58.
+   Fine gold grams = finished gold grams × 1.20 × (karat ÷ 24).
+   The 1.20 is dust and filings that will not be refined.
+   Metal cost = fine gold grams × (gold spot per ounce ÷ 31.1035).
+   Quote = making charge + metal cost, rounded up to the next $25.
+   The add-on stored on the gold choice is the quote minus the sterling price.
+   If the live price does not load, the saved prices from October 22, 2026
+   are gold $4,095/oz and silver $56.40/oz. */
 
 (function () {
   function parseAmount(value) {
@@ -114,6 +126,144 @@
     if (list) list.setAttribute("aria-live", "polite");
     if (total) total.setAttribute("aria-live", "polite");
   });
+
+  /* Gold quotes. See the note at the top of this file. */
+
+  var TROY_GRAMS = 31.1034768;
+  var STERLING_DENSITY = 10.36;
+  var GOLD_LOSS = 1.2;
+  var GOLD_DENSITY = { 14: 13.07, 18: 15.58 };
+  var savedSpot = { gold: 4095, silver: 56.4, live: false };
+  var spot = { gold: savedSpot.gold, silver: savedSpot.silver, live: false, pending: true };
+
+  function roundQuote(amount) {
+    var stepCents = 2500;
+    var cents = Math.round(amount * 100);
+    return Math.ceil((cents - 1) / stepCents) * stepCents / 100;
+  }
+
+  function formatGrams(grams) {
+    return (Math.round(grams * 10) / 10).toLocaleString("en-US", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1
+    });
+  }
+
+  function formatSpot(amount, digits) {
+    return "$" + amount.toLocaleString("en-US", {
+      minimumFractionDigits: digits,
+      maximumFractionDigits: digits
+    });
+  }
+
+  function goldQuote(grams, karat, goldOz, silverOz, silverRetail) {
+    var finished = grams * GOLD_DENSITY[karat] / STERLING_DENSITY;
+    var fine = finished * GOLD_LOSS * (karat / 24);
+    var making = silverRetail - grams * 0.925 * (silverOz / TROY_GRAMS);
+    var raw = making + fine * (goldOz / TROY_GRAMS);
+    var quote = roundQuote(raw);
+    return { finished: finished, quote: quote, addon: quote - silverRetail };
+  }
+
+  function spotSentence(current) {
+    if (current.pending) return "Checking the gold price.";
+    var gold = formatSpot(current.gold, 0);
+    var silver = formatSpot(current.silver, 2);
+    if (current.live) return "Gold " + gold + " an ounce, silver " + silver + " an ounce.";
+    return "The live metal price did not load. Using gold " + gold + " an ounce and silver " + silver + " an ounce from October 22.";
+  }
+
+  function applyGold(setting, current) {
+    var form = setting.querySelector(".options");
+    var gramsInput = setting.querySelector('input[name="silver-grams"]');
+    var weights = setting.querySelector(".gold-weights");
+    var spotLine = setting.querySelector(".spot");
+    if (!form || !gramsInput) return;
+
+    if (spotLine) spotLine.textContent = spotSentence(current);
+
+    var base = parseAmount(form.dataset.base);
+    var grams = parseAmount(gramsInput.value);
+    var goldInputs = form.querySelectorAll("input[data-karat]");
+    var usable = base !== null && grams !== null && grams >= 0.1 && grams <= 40;
+
+    if (!usable) {
+      goldInputs.forEach(function (input) {
+        delete input.dataset.price;
+        var choice = input.closest(".choice");
+        var price = choice && choice.querySelector(".choice-price");
+        var detail = choice && choice.querySelector(".choice-detail");
+        if (price) price.textContent = "—";
+        if (detail) detail.textContent = grams === null || String(gramsInput.value).trim() === ""
+          ? "Enter the sterling weight."
+          : "Enter a sterling weight from 0.1 g to 40 g.";
+      });
+      if (weights) {
+        weights.textContent = grams === null || String(gramsInput.value).trim() === ""
+          ? "Enter the sterling weight."
+          : "Enter a sterling weight from 0.1 g to 40 g.";
+      }
+      render(setting);
+      return;
+    }
+
+    var lines = [];
+    goldInputs.forEach(function (input) {
+      var karat = Number(input.dataset.karat);
+      if (!GOLD_DENSITY[karat]) return;
+      var quote = goldQuote(grams, karat, current.gold, current.silver, base);
+      input.dataset.price = String(quote.addon);
+      var choice = input.closest(".choice");
+      var price = choice && choice.querySelector(".choice-price");
+      var detail = choice && choice.querySelector(".choice-detail");
+      var finished = formatGrams(quote.finished) + " g";
+      if (price) {
+        price.textContent = quote.addon === 0 ? "Included" : (quote.addon > 0 ? "+" : "") + formatDollars(quote.addon);
+      }
+      if (detail) detail.textContent = "About " + finished + " finished. " + formatDollars(quote.quote) + " in " + karat + "k.";
+      lines.push(finished + " in " + karat + "k");
+    });
+
+    if (weights && lines.length) {
+      weights.textContent = "About " + lines.join(", and about ") + ".";
+    }
+    render(setting);
+  }
+
+  document.querySelectorAll(".setting").forEach(function (setting) {
+    var gramsInput = setting.querySelector('input[name="silver-grams"]');
+    if (!gramsInput) return;
+    gramsInput.addEventListener("input", function () {
+      applyGold(setting, spot);
+    });
+  });
+
+  function readSpot(data) {
+    var gold = Number(data && data.spot_usd_oz);
+    var silver = Number(data && data.silver_usd_oz);
+    if (!(gold > 500 && gold < 20000)) return null;
+    if (!(silver > 5 && silver < 500)) return null;
+    return { gold: gold, silver: silver, live: true };
+  }
+
+  fetch("https://xaus.com/api/v1/spot?compact=1", { cache: "no-store" })
+    .then(function (response) {
+      if (!response.ok) throw new Error("spot " + response.status);
+      return response.json();
+    })
+    .then(function (data) {
+      var live = readSpot(data);
+      if (!live) throw new Error("spot shape");
+      spot = live;
+    })
+    .catch(function () {
+      spot = savedSpot;
+    })
+    .then(function () {
+      document.querySelectorAll(".setting").forEach(function (setting) {
+        applyGold(setting, spot);
+      });
+    });
 
   /* Drop a photo in images/<slug>/ and reload. main.jpg is preferred.
      jpeg, png, and webp with the same base name also show up. */

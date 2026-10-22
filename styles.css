@@ -332,6 +332,41 @@ figcaption {
   font-size: 1.2rem;
 }
 
+.grams {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.grams input {
+  width: 4.8rem;
+  margin: 0;
+  padding: 0.05rem 0 0.1rem;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+}
+
+.grams input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.gold-weights,
+.spot {
+  margin-top: 0.55rem;
+  max-width: 38rem;
+}
+
+.spot {
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
 .sample {
   margin-top: 0.55rem;
   max-width: 38rem;
