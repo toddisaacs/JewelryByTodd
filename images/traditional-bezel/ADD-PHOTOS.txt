@@ -1,0 +1,11 @@
+Save three photos of the traditional bezel in this folder, then reload the catalog.
+
+main.jpg       the whole ring from the front, stone set in the bezel
+skirt.jpg      close-up of the skirt (braid-rope or square-twist)
+shoulder.jpg   the shoulder, or a finish other than high polish
+
+JPG is the best choice. JPEG, PNG, and WEBP also work if the name before the dot stays the same.
+
+A long edge around 1600 pixels is enough. The page shows the whole photo, so leave a little space around the ring.
+
+The share link for this setting is the catalog address plus #traditional-bezel.

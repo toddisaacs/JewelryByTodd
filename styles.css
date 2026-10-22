@@ -1,0 +1,546 @@
+/* Jewelry by Todd — setting catalog
+   Bench-pad ground, one setting at a time, prices in a right-hand column.
+   Type: Petrona for titles, Atkinson Hyperlegible for reading prices on a phone. */
+
+:root {
+  --pad: #e4e8ec;
+  --ink: #1c2430;
+  --muted: #3a4654;
+  --line: #c5ced6;
+  --mat: #c9d3dc;
+  --serif: "Petrona", "Iowan Old Style", Palatino, "Palatino Linotype", serif;
+  --sans: "Atkinson Hyperlegible", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  background: var(--pad);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+p,
+h1,
+h2,
+h3,
+ul,
+dl,
+figure {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+::selection {
+  background: #c5d0da;
+  color: var(--ink);
+}
+
+.skip {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  transform: translateY(-200%);
+  background: var(--ink);
+  color: #f7f8f9;
+  padding: 0.5rem 0.75rem;
+  z-index: 2;
+}
+
+.skip:focus {
+  transform: none;
+}
+
+.page {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 4.5rem;
+}
+
+/* Intro */
+
+.intro {
+  padding-bottom: 2.75rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.intro h1,
+.intro .tagline,
+.intro p {
+  max-width: 38rem;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 6vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin-top: 0.55rem;
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
+.intro p + p {
+  margin-top: 1.15rem;
+}
+
+.style-index {
+  margin-top: 2rem;
+}
+
+.style-index ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.5rem;
+}
+
+.style-index a {
+  color: var(--ink);
+  font-size: 1.15rem;
+}
+
+.style-index a[aria-current="location"] {
+  font-weight: 700;
+}
+
+.style-index a:focus-visible,
+.copy-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* One setting: title, photos, then the price sheet.
+   On a wide screen the photos sit in the left column. */
+
+.setting,
+.setting-photos,
+.options {
+  scroll-margin-top: 1.25rem;
+}
+
+.setting {
+  display: grid;
+  gap: 2.75rem;
+}
+
+.setting:focus {
+  outline: none;
+}
+
+.setting-heading h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(2.15rem, 4vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.permalink {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 1rem;
+  margin-top: 0.7rem;
+}
+
+.permalink a {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.copy-link {
+  font: inherit;
+  font-weight: 700;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 0.35rem 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.status {
+  margin-top: 0.9rem;
+  max-width: 36rem;
+  color: var(--muted);
+}
+
+.lede {
+  margin-top: 1.25rem;
+  max-width: 38rem;
+}
+
+/* Photo mounts. Swap .mat for an img when the shot exists. */
+
+.photo-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+}
+
+.mat {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  background: var(--mat);
+  box-shadow: inset 0 0 0 1px rgba(28, 36, 48, 0.16);
+}
+
+.photo-main .mat {
+  aspect-ratio: 5 / 4;
+}
+
+.photo-detail .mat {
+  aspect-ratio: 1 / 1;
+}
+
+.photo img {
+  width: 100%;
+  object-fit: contain;
+  background: var(--mat);
+}
+
+.photo-main img {
+  aspect-ratio: 5 / 4;
+}
+
+.photo-detail img {
+  aspect-ratio: 1 / 1;
+}
+
+.mat-title {
+  font-family: var(--sans);
+  font-size: 1.05rem;
+}
+
+.photo-main .mat-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 500;
+}
+
+.mat-note,
+.blank {
+  font-style: italic;
+}
+
+.mat-file {
+  max-width: 16rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.mat-note {
+  color: var(--muted);
+}
+
+figcaption {
+  margin-top: 0.55rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.4;
+}
+
+/* Weight, limits, and the option sheet */
+
+.facts {
+  display: grid;
+  gap: 0;
+}
+
+.facts > div {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.facts > div:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.facts dt {
+  color: var(--muted);
+}
+
+.facts dd {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.sample {
+  margin-top: 0.55rem;
+  max-width: 38rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.options {
+  margin-top: 2.25rem;
+}
+
+.price-note,
+.rule {
+  max-width: 38rem;
+  color: var(--muted);
+}
+
+.price-note {
+  margin-bottom: 1.75rem;
+}
+
+fieldset {
+  border: 0;
+  margin: 0 0 2.15rem;
+  padding: 0;
+  min-inline-size: 0;
+}
+
+legend {
+  float: none;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 0.35rem;
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.rule {
+  margin: 0.2rem 0 0.35rem;
+}
+
+.choice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  column-gap: 0.75rem;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.choice input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  accent-color: var(--ink);
+}
+
+.choice input:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.choice-name {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.05rem;
+}
+
+.choice-detail {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.choice-price {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.choice.is-unavailable {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Read-back of the current combination */
+
+.readback {
+  margin-top: 0.5rem;
+}
+
+.readback h3,
+.order-notes h3,
+.confirm h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.readback h3 {
+  margin-bottom: 0.35rem;
+}
+
+.readback-list div,
+.readback-total {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.readback-list dt,
+.readback-total span {
+  color: var(--muted);
+}
+
+.readback-list dd {
+  margin: 0;
+  font-weight: 700;
+  text-align: right;
+}
+
+.readback-total {
+  margin-top: 0.35rem;
+  border-bottom: 0;
+}
+
+.readback-total strong {
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.order-notes {
+  margin-top: 2.75rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.order-notes h3 + p {
+  margin-bottom: 1.35rem;
+  max-width: 38rem;
+}
+
+.order-notes h3:last-of-type + p {
+  margin-bottom: 0;
+}
+
+.confirm {
+  margin-top: 2.75rem;
+}
+
+.confirm h3 {
+  margin-bottom: 0.35rem;
+}
+
+.confirm li {
+  list-style: none;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.confirm li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.site-footer p {
+  max-width: 38rem;
+}
+
+@media (min-width: 52rem) {
+  .page {
+    padding: 3.25rem 2.5rem 6rem;
+  }
+
+  .intro {
+    padding-bottom: 3.25rem;
+    margin-bottom: 4.25rem;
+  }
+
+  .setting {
+    grid-template-columns: minmax(0, 1.15fr) minmax(19rem, 0.85fr);
+    column-gap: 4rem;
+    row-gap: 1.75rem;
+    align-items: start;
+  }
+
+  .setting-photos {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .setting-heading {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .setting-body {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .photo-main .mat,
+  .photo-main img {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .skip {
+    display: none;
+  }
+
+  .setting {
+    display: block;
+  }
+
+  .photo {
+    break-inside: avoid;
+  }
+}

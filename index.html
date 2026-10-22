@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Traditional bezel — Jewelry by Todd</title>
+  <meta name="description" content="Made-to-order ring settings from Jewelry by Todd, for use during Whatnot stone sales. Prices are for the setting only.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Petrona:ital,opsz,wght@0,9..72,500;0,9..72,600;1,9..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#catalog">Skip to the setting</a>
+
+  <div class="page">
+    <header class="intro">
+      <h1>Jewelry by Todd</h1>
+      <p class="tagline">Ring settings, made to order</p>
+      <p>Use this page during a Whatnot stone sale. It shows each handmade setting, the choices on it, and the price for the setting. The stone is separate. After the stone and the setting are chosen, the ring is made to order.</p>
+      <nav class="style-index" aria-label="Settings">
+        <ul>
+          <li><a href="#traditional-bezel">Traditional bezel</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="catalog">
+      <!--
+        STYLE TEMPLATE
+        Copy this whole <article class="setting"> when adding another style.
+        Give the new article its own id, and point aria-labelledby / aria-describedby
+        at ids that start with that same slug.
+
+        The article id is the share link: #traditional-bezel
+        Also linkable: #traditional-bezel-photos and #traditional-bezel-options
+        Add the new id to the "Settings" list in the header.
+
+        Replace the visible copy for: name, description, weight, stone limits,
+        gold karat, every price, and lead time.
+
+        Photos: save files in images/<slug>/ and reload. No HTML edit.
+        main.jpg, skirt.jpg, shoulder.jpg (jpeg, png, and webp work too).
+        Each <img data-base="images/<slug>/main"> tries those extensions.
+
+        Prices (also read by catalog.js):
+        - Put the sterling base on the form as data-base="180" (digits only).
+        - Put each option's add-on on its input as data-price="40".
+        - Options that are part of the base use data-price="0" once that is confirmed.
+        - Gold's data-price is the extra over sterling, matching the "+$…" shown.
+        - Leave data-base and data-price empty while the amount is still a blank.
+        - Keep the visible amount and the data attribute the same.
+      -->
+      <article class="setting" id="traditional-bezel" tabindex="-1" aria-labelledby="traditional-bezel-title">
+        <header class="setting-heading">
+          <h2 id="traditional-bezel-title">Traditional bezel</h2>
+          <p class="permalink">
+            <a href="#traditional-bezel">#traditional-bezel</a>
+            <button type="button" class="copy-link" data-id="traditional-bezel">Copy link</button>
+          </p>
+          <p class="status">Photos, weight, stone limits, and prices for this style are not final yet.</p>
+          <p class="lede">A traditional bezel holds the stone with a metal rim around the edge. The skirt under that rim is part of the order: none, a braid-rope, or a square-twist.</p>
+        </header>
+
+        <div class="setting-photos" id="traditional-bezel-photos" tabindex="-1">
+          <figure class="photo photo-main">
+            <img data-base="images/traditional-bezel/main" alt="Traditional bezel, front view, stone set in the bezel." hidden>
+            <div class="mat">
+              <p class="mat-title">Main view</p>
+              <p class="mat-note">Photo needed</p>
+              <p class="mat-file">images/traditional-bezel/main.jpg</p>
+            </div>
+            <figcaption>Front of the ring, stone set in the bezel.</figcaption>
+          </figure>
+          <div class="photo-details">
+            <figure class="photo photo-detail">
+              <img data-base="images/traditional-bezel/skirt" alt="Close-up of the traditional bezel skirt." hidden>
+              <div class="mat">
+                <p class="mat-title">Skirt</p>
+                <p class="mat-note">Photo needed</p>
+                <p class="mat-file">images/traditional-bezel/skirt.jpg</p>
+              </div>
+              <figcaption>Close-up of the skirt, braid-rope or square-twist.</figcaption>
+            </figure>
+            <figure class="photo photo-detail">
+              <img data-base="images/traditional-bezel/shoulder" alt="Close-up of the traditional bezel shoulder or finish." hidden>
+              <div class="mat">
+                <p class="mat-title">Shoulder</p>
+                <p class="mat-note">Photo needed</p>
+                <p class="mat-file">images/traditional-bezel/shoulder.jpg</p>
+              </div>
+              <figcaption>The shoulder, or a finish other than high polish.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="setting-body">
+          <dl class="facts">
+            <div>
+              <dt>Approximate finished weight</dt>
+              <dd><span class="blank">[X] g</span></dd>
+            </div>
+            <div>
+              <dt>Stone size and shape</dt>
+              <dd>
+                <span class="blank">[Write the limits and any exceptions]</span>
+                <p class="sample">Sample of the kind of note that goes in the line above: “Best for 8–12 mm round or oval cabs. Square stones may need adjustment.”</p>
+              </dd>
+            </div>
+          </dl>
+
+          <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="" action="#">
+            <p class="price-note">Amounts shown as $XXX or +$XX are not final. Included marks the options in the sterling base for now: no skirt, and high polish.</p>
+
+            <fieldset>
+              <legend>Metal</legend>
+              <label class="choice">
+                <input type="radio" name="metal" value="silver" checked>
+                <span class="choice-text">
+                  <span class="choice-name">Sterling silver</span>
+                </span>
+                <span class="choice-price">$XXX</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="metal" value="gold">
+                <span class="choice-text">
+                  <span class="choice-name">Gold</span>
+                  <span class="choice-detail">Karat not set yet. This amount is added to the sterling price.</span>
+                </span>
+                <span class="choice-price">+$XX</span>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Bezel skirt</legend>
+              <label class="choice">
+                <input type="radio" name="skirt" value="none" checked>
+                <span class="choice-text">
+                  <span class="choice-name">None</span>
+                </span>
+                <span class="choice-price">Included</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="skirt" value="braid-rope">
+                <span class="choice-text">
+                  <span class="choice-name">Braid-rope</span>
+                </span>
+                <span class="choice-price">+$XX</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="skirt" value="square-twist">
+                <span class="choice-text">
+                  <span class="choice-name">Square-twist</span>
+                </span>
+                <span class="choice-price">+$XX</span>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Finish</legend>
+              <label class="choice">
+                <input type="radio" name="finish" value="high-polish" checked>
+                <span class="choice-text">
+                  <span class="choice-name">High polish</span>
+                  <span class="choice-detail">Bright, reflective metal.</span>
+                </span>
+                <span class="choice-price">Included</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="finish" value="antique">
+                <span class="choice-text">
+                  <span class="choice-name">Antique</span>
+                  <span class="choice-detail">Darkened finish. Left unplated.</span>
+                </span>
+                <span class="choice-price">+$XX</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="finish" value="satin">
+                <span class="choice-text">
+                  <span class="choice-name">Satin</span>
+                  <span class="choice-detail">Soft, low-sheen metal.</span>
+                </span>
+                <span class="choice-price">+$XX</span>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Rhodium plate</legend>
+              <p class="rule" id="traditional-bezel-rhodium-rule">Rhodium plate can be added to high polish or satin. Antique is left unplated.</p>
+              <label class="choice">
+                <input type="checkbox" name="rhodium" value="yes" aria-describedby="traditional-bezel-rhodium-rule">
+                <span class="choice-text">
+                  <span class="choice-name">Add rhodium plate</span>
+                </span>
+                <span class="choice-price">+$XX</span>
+              </label>
+            </fieldset>
+
+            <div class="readback">
+              <h3>Selected options</h3>
+              <dl class="readback-list">
+                <div><dt>Metal</dt><dd>Sterling silver</dd></div>
+                <div><dt>Bezel skirt</dt><dd>None</dd></div>
+                <div><dt>Finish</dt><dd>High polish</dd></div>
+                <div><dt>Rhodium plate</dt><dd>No</dd></div>
+              </dl>
+              <div class="readback-total">
+                <span>Total</span>
+                <strong>No total yet</strong>
+              </div>
+            </div>
+          </form>
+
+          <section class="order-notes">
+            <h3>Finger size</h3>
+            <p>Finger size is required with every order. Ask for it when the setting is written down.</p>
+            <h3>Lead time</h3>
+            <p>The setting is made to order once the stone is chosen. Current lead time: <span class="blank">[X weeks]</span>.</p>
+          </section>
+
+          <section class="confirm" aria-labelledby="traditional-bezel-confirm">
+            <h3 id="traditional-bezel-confirm">Still to fill in</h3>
+            <ul>
+              <li>Main photo, saved as images/traditional-bezel/main.jpg</li>
+              <li>Skirt close-up, saved as images/traditional-bezel/skirt.jpg</li>
+              <li>Shoulder or finish close-up, saved as images/traditional-bezel/shoulder.jpg</li>
+              <li>Finished weight in grams</li>
+              <li>Stone size and shape limits, and any exceptions</li>
+              <li>Sterling base price</li>
+              <li>Gold karat and the gold add-on</li>
+              <li>Add-on prices for braid-rope, square-twist, antique, satin, and rhodium plate</li>
+              <li>Current lead time</li>
+            </ul>
+          </section>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>To order, ask during the show. Have the style, the options, and the finger size.</p>
+    </footer>
+  </div>
+
+  <script src="catalog.js"></script>
+</body>
+</html>
