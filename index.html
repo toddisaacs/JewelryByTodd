@@ -48,9 +48,11 @@
 
         Prices (also read by catalog.js):
         - Put the sterling base on the form as data-base="180" (digits only).
+        - Put the finished sterling weight on the form as data-grams="2.5".
         - Put each option's add-on on its input as data-price="40".
         - Options that are part of the base use data-price="0" once that is confirmed.
-        - Gold's data-price is the extra over sterling, matching the "+$…" shown.
+        - Gold's data-price in the HTML is the fallback. catalog.js replaces it
+          from data-grams and the live metal price.
         - Leave data-base and data-price empty while the amount is still a blank.
         - Keep the visible amount and the data attribute the same.
       -->
@@ -98,12 +100,9 @@
             <div>
               <dt>Approximate finished weight</dt>
               <dd>
-                <label class="grams">
-                  <input id="traditional-bezel-grams" type="number" name="silver-grams" form="traditional-bezel-options" value="2.5" min="0.1" max="40" step="0.1" inputmode="decimal">
-                  g in sterling silver
-                </label>
+                <p>2.5 g in sterling silver.</p>
                 <p class="gold-weights" id="traditional-bezel-gold-weights" aria-live="polite">About 3.2 g in 14k gold, and about 3.8 g in 18k gold.</p>
-                <p class="sample">Type the finished sterling weight. Gold weights and prices follow it, until a gold ring is weighed.</p>
+                <p class="sample">Working weight. Gold weights and prices follow it, until a gold ring is weighed.</p>
                 <p class="spot" id="traditional-bezel-spot" aria-live="polite">Checking the gold price.</p>
               </dd>
             </div>
@@ -113,12 +112,12 @@
             </div>
           </dl>
 
-          <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="225" action="#">
+          <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="225" data-grams="2.5" action="#">
             <p class="price-note">Included is part of the $225 sterling price: no skirt, and high polish. Gold follows the sterling weight and the current metal price. The total stays blank if antique is selected, because that add-on is not set.</p>
 
             <!--
               Gold prices are recalculated in catalog.js from this form's
-              sterling price, the silver-grams field, and the live spot.
+              data-base, data-grams, and the live spot.
               The numbers below are the fallback if that script does not run.
             -->
             <fieldset>
@@ -230,7 +229,7 @@
           <section class="confirm" aria-labelledby="traditional-bezel-confirm">
             <h3 id="traditional-bezel-confirm">Still to fill in</h3>
             <ul>
-              <li>Weigh a finished silver ring and enter the grams. Gold prices follow that weight.</li>
+              <li>Weigh a finished silver ring and set the grams in the page. It is 2.5 g for now.</li>
               <li>Weigh the first gold ring to confirm the estimate.</li>
               <li>Antique finish add-on, if there is one</li>
             </ul>

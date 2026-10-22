@@ -8,7 +8,8 @@
    The total stays "No total yet" until the base and every selected
    add-on are numbers. Antique finish clears and disables rhodium.
 
-   Gold quotes follow the sterling weight and the live spot.
+   The sterling weight lives on the form as data-grams="2.5".
+   Gold quotes follow that weight and the live spot.
    Making charge = sterling price minus the silver in that weight.
    Finished gold grams = sterling grams × (density ÷ 10.36).
    14k yellow is 13.07. 18k yellow is 15.58.
@@ -175,15 +176,14 @@
 
   function applyGold(setting, current) {
     var form = setting.querySelector(".options");
-    var gramsInput = setting.querySelector('input[name="silver-grams"]');
     var weights = setting.querySelector(".gold-weights");
     var spotLine = setting.querySelector(".spot");
-    if (!form || !gramsInput) return;
+    if (!form) return;
 
     if (spotLine) spotLine.textContent = spotSentence(current);
 
     var base = parseAmount(form.dataset.base);
-    var grams = parseAmount(gramsInput.value);
+    var grams = parseAmount(form.dataset.grams);
     var goldInputs = form.querySelectorAll("input[data-karat]");
     var usable = base !== null && grams !== null && grams >= 0.1 && grams <= 40;
 
@@ -194,15 +194,9 @@
         var price = choice && choice.querySelector(".choice-price");
         var detail = choice && choice.querySelector(".choice-detail");
         if (price) price.textContent = "—";
-        if (detail) detail.textContent = grams === null || String(gramsInput.value).trim() === ""
-          ? "Enter the sterling weight."
-          : "Enter a sterling weight from 0.1 g to 40 g.";
+        if (detail) detail.textContent = "Sterling weight is not set.";
       });
-      if (weights) {
-        weights.textContent = grams === null || String(gramsInput.value).trim() === ""
-          ? "Enter the sterling weight."
-          : "Enter a sterling weight from 0.1 g to 40 g.";
-      }
+      if (weights) weights.textContent = "Sterling weight is not set.";
       render(setting);
       return;
     }
@@ -229,14 +223,6 @@
     }
     render(setting);
   }
-
-  document.querySelectorAll(".setting").forEach(function (setting) {
-    var gramsInput = setting.querySelector('input[name="silver-grams"]');
-    if (!gramsInput) return;
-    gramsInput.addEventListener("input", function () {
-      applyGold(setting, spot);
-    });
-  });
 
   function readSpot(data) {
     var gold = Number(data && data.spot_usd_oz);
