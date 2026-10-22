@@ -39,9 +39,10 @@
         Replace the visible copy for: name, description, weight, stone limits,
         gold karat, every price, and lead time.
 
-        Photos: save files in images/<slug>/ and reload. No HTML edit.
-        main.jpg, skirt.jpg, shoulder.jpg (jpeg, png, and webp work too).
-        Each <img data-base="images/<slug>/main"> tries those extensions.
+        Photos: save files in images/<slug>/ and point each <img src> at the file.
+        A still around 2 MB is a normal size.
+        Video: post it on X and embed the status with a blockquote.twitter-tweet.
+        Do not commit the video file. One widgets.js script in the page is enough.
 
         Prices (also read by catalog.js):
         - Put the sterling base on the form as data-base="180" (digits only).
@@ -58,38 +59,28 @@
             <a href="#traditional-bezel">#traditional-bezel</a>
             <button type="button" class="copy-link" data-id="traditional-bezel">Copy link</button>
           </p>
-          <p class="status">Photos, weight, stone limits, and prices for this style are not final yet.</p>
+          <p class="status">Weight, stone limits, and prices for this style are not final yet.</p>
           <p class="lede">A traditional bezel holds the stone with a metal rim around the edge. The skirt under that rim is part of the order: none, a braid-rope, or a square-twist.</p>
         </header>
 
         <div class="setting-photos" id="traditional-bezel-photos" tabindex="-1">
           <figure class="photo photo-main">
-            <img data-base="images/traditional-bezel/main" alt="Traditional bezel, front view, stone set in the bezel." hidden>
-            <div class="mat">
-              <p class="mat-title">Main view</p>
-              <p class="mat-note">Photo needed</p>
-              <p class="mat-file">images/traditional-bezel/main.jpg</p>
+            <div class="video-frame">
+              <blockquote class="twitter-tweet" data-dnt="true" data-theme="light" data-lang="en">
+                <p lang="en" dir="ltr">Lab Alex traditional bezel setting.</p>
+                <a href="https://x.com/JewelryByTodd/status/2108680465028665771">Watch the Lab Alex traditional bezel on X</a>
+              </blockquote>
             </div>
-            <figcaption>Front of the ring, stone set in the bezel.</figcaption>
+            <figcaption>Lab Alex traditional bezel. The clip plays from X.</figcaption>
           </figure>
           <div class="photo-details">
             <figure class="photo photo-detail">
-              <img data-base="images/traditional-bezel/skirt" alt="Close-up of the traditional bezel skirt." hidden>
-              <div class="mat">
-                <p class="mat-title">Skirt</p>
-                <p class="mat-note">Photo needed</p>
-                <p class="mat-file">images/traditional-bezel/skirt.jpg</p>
-              </div>
-              <figcaption>Close-up of the skirt, braid-rope or square-twist.</figcaption>
+              <img src="images/traditional-bezel/IMG_4322.jpeg" alt="Front view of a traditional bezel with a rope edge and a round purple stone, on a black display stand.">
+              <figcaption>Front of the setting, with the rope edge around the stone.</figcaption>
             </figure>
             <figure class="photo photo-detail">
-              <img data-base="images/traditional-bezel/shoulder" alt="Close-up of the traditional bezel shoulder or finish." hidden>
-              <div class="mat">
-                <p class="mat-title">Shoulder</p>
-                <p class="mat-note">Photo needed</p>
-                <p class="mat-file">images/traditional-bezel/shoulder.jpg</p>
-              </div>
-              <figcaption>The shoulder, or a finish other than high polish.</figcaption>
+              <img src="images/traditional-bezel/IMG_4321.jpeg" alt="Side view of a traditional bezel with a rope edge, showing the band and the height of the setting.">
+              <figcaption>Side view, showing the rope edge and the band.</figcaption>
             </figure>
           </div>
         </div>
@@ -221,9 +212,6 @@
           <section class="confirm" aria-labelledby="traditional-bezel-confirm">
             <h3 id="traditional-bezel-confirm">Still to fill in</h3>
             <ul>
-              <li>Main photo, saved as images/traditional-bezel/main.jpg</li>
-              <li>Skirt close-up, saved as images/traditional-bezel/skirt.jpg</li>
-              <li>Shoulder or finish close-up, saved as images/traditional-bezel/shoulder.jpg</li>
               <li>Finished weight in grams</li>
               <li>Stone size and shape limits, and any exceptions</li>
               <li>Sterling base price</li>
@@ -241,6 +229,7 @@
     </footer>
   </div>
 
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   <script src="catalog.js"></script>
 </body>
 </html>

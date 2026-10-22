@@ -240,7 +240,24 @@ h1 {
 }
 
 .photo-detail img {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 3 / 4;
+}
+
+.video-frame {
+  max-width: 100%;
+}
+
+.video-frame .twitter-tweet {
+  margin: 0;
+}
+
+.video-frame iframe {
+  max-width: 100% !important;
+}
+
+.setting-photos:focus,
+.options:focus {
+  outline: none;
 }
 
 .mat-title {
