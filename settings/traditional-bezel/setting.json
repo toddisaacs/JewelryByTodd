@@ -6,7 +6,6 @@
   "grams": 2.5,
   "hours": 6,
   "rate": 30,
-  "weightNote": "Working weight, until a finished gold ring is weighed.",
   "stone": "Faceted stones, round or oval. A medium to large stone is ideal for this setting, because the ring is welded to the bezel. Be careful with a deep stone: it needs a much taller bezel, and that can look out of proportion.",
   "about": [
     "A traditional bezel holds a center diamond or gemstone in a custom-fitted rim of precious metal. The rim secures the stone without prongs, and it may encircle the stone completely or only in part. This setting is a full bezel: a continuous band of metal surrounds the whole perimeter, for edge protection and snag-free everyday wear. The stone is faceted, in a round or oval shape.",
@@ -94,9 +93,5 @@
     }
   ],
   "fingerSize": "Finger size is required with every order. Ask for it when the setting is written down.",
-  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks.",
-  "open": [
-    "Weigh a finished silver ring and set the grams in the page. It is 2.5 g for now.",
-    "Weigh the first gold ring to confirm the estimate."
-  ]
+  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks."
 }
