@@ -1,10 +1,16 @@
 {
   "name": "Jewelry by Todd",
-  "tagline": "Handmade Jewelry",
-  "description": "Handmade by Todd",
-  "intro": "Handmade jewelry, made to order. All settings are made from scratch, and all stones are set by hand. Prices are for the setting only.",
+  "tagline": "Never hollow. Never hurried. Solid metal forged by hand.",
+  "description": "Crafted with substance you can feel. Solid handmade settings, forged and set by hand.",
+  "intro": "Handmade jewelry, made to order. Every piece is forged by hand from solid sheet and wire, and every stone is set by hand. Metal is sourced from established jewelry supply houses: sterling is .925, gold is stamped at its karat. Prices are for the setting only.",
   "skip": "Skip to the setting",
   "footer": " ",
+  "rate": 30,
+  "metal": {
+    "gold": 4095,
+    "silver": 56.4,
+    "asOf": "October 22, 2026"
+  },
   "flags": {
     "laser": false
   }

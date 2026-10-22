@@ -1,13 +1,45 @@
 Each folder here is one setting. The publish build reads the folders and writes the page.
 
-To add a setting, copy the traditional-bezel folder and give the copy a new name. Open setting.json and change the id so it matches the folder name. Edit the title, the description, the weight, and the options.
+BEFORE YOU PUSH
+Run  npm run check
+If it prints an error, fix that line and run it again. A green run means the page will build.
+Run  npm run preview  to open the real page in a browser before anyone else sees it.
 
-To add a photo or a video, put the file in that setting's folder and add it under media. A still around 2 MB is a normal size. Use a 720p or 1080p mp4. Leave the original 4K file off the site.
+TO ADD A SETTING
+Copy the traditional-bezel folder and give the copy a new name. Open setting.json and change
+the id so it matches the folder name. Edit the title, the description, the weight, and the
+options. Set order so the settings list in the sequence you want: 1, then 2, then 3.
 
-To add an option, add a choice under that option. price 0 means it is included. An addon is a checkbox. The finish value antique turns off the addon whose field is rhodium.
+TO ADD A PHOTO OR A VIDEO
+Put the file in that setting's folder and add it under media. Export stills at about 1600 px
+on the long edge, under 400 KB. Use a 720p or 1080p mp4. Leave the original 4K file off the
+site. Every file in the folder has to be listed under media, or the build stops.
 
-Laser engrave is written on the setting, then held by the laser flag in site.json. Set "laser" to true when it should show. While it is false, the option is left off the page.
+PRICES
+The shop rate and the metal prices live in site.json, in one place for the whole catalog:
 
-grams is the finished sterling weight. hours and rate are the labor for that setting. The page uses them to price the metal and does not show them.
+  "rate": 30                 the hourly shop rate
+  "metal": { "gold": 4095, "silver": 56.4, "asOf": "October 22, 2026" }
+
+When metal moves enough to matter, edit gold and silver, update asOf, and push. The page
+shows the asOf date so the estimate is honestly dated. A setting can override the rate with
+its own "rate" if it ever needs to, but normally it should not.
+
+hours is the labor for that setting. grams is the finished sterling weight of the base piece.
+The page never shows hours or the rate. It gets the labor charge as one number, and the build
+refuses to publish if hours or the rate reach the script.
+
+TO ADD AN OPTION
+Add a choice under that option.
+  price 0        included in the base price
+  price 20       twenty dollars of extra labor
+  addGrams 1.0   uses one more gram of metal, so it costs more in gold than in silver
+An option can have both. Use addGrams for anything that makes the piece heavier: a wider
+shank, decorative shoulders, a skirt. Without it, a heavy shank in gold is sold at a loss.
+
+An addon is a checkbox. The finish value antique turns off the addon whose field is rhodium.
+
+Laser engrave is written on the setting, then held by the laser flag in site.json. Set
+"laser" to true when it should show. While it is false, the option is left off the page.
 
 Push the folder to GitHub. The publish build writes the page.

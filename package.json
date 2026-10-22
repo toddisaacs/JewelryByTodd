@@ -2,7 +2,9 @@
   "name": "jewelry-by-todd",
   "private": true,
   "scripts": {
-    "build": "node build.mjs"
+    "check": "node build.mjs",
+    "build": "node build.mjs",
+    "preview": "node build.mjs && python3 -m http.server 8000 --directory dist"
   },
   "devDependencies": {
     "terser": "^5.44.0"

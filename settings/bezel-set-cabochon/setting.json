@@ -5,7 +5,6 @@
   "lede": "low or full bezel for cabochons.",
   "grams": 2.5,
   "hours": 6,
-  "rate": 30,
   "stone": "Cabochons, including ovals and less regular shapes. Faceted stones use the traditional bezel.",
   "about": [
     "This setting holds a cabochon in a low bezel. A metal rim follows the outline of the stone and protects the edge. The ring stays low on the hand. The shape can follow an oval or a less regular cabochon."
@@ -22,6 +21,10 @@
     {
       "name": "Low profile.",
       "text": "The setting stays low, so the ring wears close to the hand."
+    },
+    {
+      "name": "Solid, and repairable for decades.",
+      "text": "A solid handmade piece can be sized, re-soldered, or restored years later. Hollow or plated factory pieces often melt or crack under a jeweler's torch."
     }
   ],
   "media": [
@@ -47,8 +50,17 @@
       "name": "Metal",
       "field": "metal",
       "choices": [
-        { "name": "Sterling silver", "value": "silver", "metal": "silver", "selected": true },
-        { "name": "14k gold", "value": "gold-14k", "karat": 14 }
+        {
+          "name": "Sterling silver",
+          "value": "silver",
+          "metal": "silver",
+          "selected": true
+        },
+        {
+          "name": "14k gold",
+          "value": "gold-14k",
+          "karat": 14
+        }
       ]
     },
     {
@@ -66,7 +78,8 @@
           "name": "Heavy",
           "value": "heavy",
           "price": 10,
-          "detail": "Wider than 3 mm, about 2 mm thick."
+          "detail": "Wider than 3 mm, about 2 mm thick. Uses about 1 g more metal.",
+          "addGrams": 1.0
         }
       ]
     },
@@ -85,7 +98,8 @@
           "name": "Decorative",
           "value": "decorative",
           "price": 20,
-          "detail": "Stacked rings where the bezel meets the shank."
+          "detail": "Stacked rings where the bezel meets the shank. Uses a little more metal.",
+          "addGrams": 0.4
         }
       ]
     },
@@ -112,15 +126,24 @@
       "name": "Rhodium plate",
       "field": "rhodium",
       "rule": "Rhodium plate can be added to high polish. Antique is left unplated.",
-      "addon": { "name": "Add rhodium plate", "value": "yes", "price": 50 }
+      "addon": {
+        "name": "Add rhodium plate",
+        "value": "yes",
+        "price": 50
+      }
     },
     {
       "name": "Laser engrave",
       "field": "engrave",
       "flag": "laser",
-      "addon": { "name": "Add laser engrave", "value": "yes", "price": 25 }
+      "addon": {
+        "name": "Add laser engrave",
+        "value": "yes",
+        "price": 25
+      }
     }
   ],
   "fingerSize": "Finger size is required with every order. Ask for it when the setting is written down.",
-  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks for fabrication."
+  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks for fabrication. These are made one at a time, part time, so I take a limited number of orders at once.",
+  "weightNote": "A reassuring weight on the finger, and an heirloom in the making. The metal is solid through, never hollowed out, so the piece has substance you can feel."
 }

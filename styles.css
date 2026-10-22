@@ -241,32 +241,11 @@ h1 a {
   max-width: 38rem;
 }
 
-/* Photo mounts. Swap .mat for an img when the shot exists. */
-
 .photo-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.85rem;
   margin-top: 0.85rem;
-}
-
-.mat {
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  text-align: center;
-  gap: 0.35rem;
-  padding: 1.25rem;
-  background: var(--mat);
-  box-shadow: inset 0 0 0 1px rgba(28, 36, 48, 0.16);
-}
-
-.photo-main .mat {
-  aspect-ratio: 5 / 4;
-}
-
-.photo-detail .mat {
-  aspect-ratio: 1 / 1;
 }
 
 .photo img {
@@ -295,34 +274,6 @@ h1 a {
 .setting-photos:focus,
 .options:focus {
   outline: none;
-}
-
-.mat-title {
-  font-family: var(--sans);
-  font-size: 1.05rem;
-}
-
-.photo-main .mat-title {
-  font-family: var(--serif);
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  font-weight: 500;
-}
-
-.mat-note,
-.blank {
-  font-style: italic;
-}
-
-.mat-file {
-  max-width: 16rem;
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
-}
-
-.mat-note {
-  color: var(--muted);
 }
 
 figcaption {
@@ -615,7 +566,6 @@ body.is-setting .intro {
     grid-row: 2;
   }
 
-  .photo-main .mat,
   .photo-main img {
     aspect-ratio: 4 / 5;
   }

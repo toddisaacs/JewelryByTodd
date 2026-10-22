@@ -1,32 +1,30 @@
 /* Selected-option read-back, rhodium rule, and total.
 
-   catalog.js writes the sterling price onto the form as data-base.
-   Each fixed add-on lives on its input as data-price="40".
-   Use data-price="0" for an option that is part of the base.
-   A gold data-price is the extra over the sterling price.
-   Leave an attribute empty while that amount is still a blank.
-   The total stays "No total yet" until the base and every selected
-   add-on are numbers. Antique finish clears and disables rhodium.
+   The build writes the price list below from site.json and each
+   settings/<id>/setting.json. Per setting it holds three things:
 
-   The finished sterling weight lives on the form as data-grams.
-   Hours and the hourly rate live in settings/<id>/setting.json.
-   The build copies them into the work list below. They are not on the page.
-   Company profit is 20% of labor plus metal. The page shows only the result.
-   The result is rounded to the nearest dollar and is the order price.
+     labor   the shop charge in dollars, already marked up
+     grams   the finished sterling weight of the base piece
+     metals  dollars per gram of that weight, by metal, marked up
 
-   Labor = hours × rate.
-   Silver metal = sterling grams × 0.925 × (silver spot ÷ 31.1035).
-   Finished gold grams = sterling grams × (density ÷ 10.36).
-   14k yellow is 13.07. 18k yellow is 15.58.
-   Fine gold grams = finished gold grams × 1.20 × (karat ÷ 24).
-   The 1.20 is dust and filings that will not be refined.
-   Gold metal = fine gold grams × (gold spot ÷ 31.1035).
-   Price = nearest dollar of (labor + metal) × 1.20.
-   A gold add-on is that gold price minus the sterling price.
-   If the live price does not load, the saved prices from October 22, 2026
-   are gold $4,095/oz and silver $56.40/oz. */
+   Hours, the hourly rate, and the markup stay in the source files.
+   They are not written to the page.
+
+   Price = labor + metals[metal] × (grams + extra grams), to the dollar,
+   plus the flat price of each selected add-on.
+
+   An option that uses more metal carries addGrams in setting.json, so a
+   heavier shank costs more in gold than it does in silver. An option that
+   is only labor carries price. An option can carry both.
+
+   Antique finish clears and disables rhodium. */
 
 (function () {
+  var STERLING_DENSITY = 10.36;
+  var GOLD_DENSITY = { 14: 13.07, 18: 15.58 };
+  /* The build replaces this empty list. */
+  var price = {};
+
   function parseAmount(value) {
     if (value == null) return null;
     var text = String(value).trim();
@@ -36,19 +34,39 @@
   }
 
   function formatDollars(amount) {
-    var cents = Math.round(amount * 100);
-    var negative = cents < 0;
-    var abs = Math.abs(cents);
-    var dollars = Math.floor(abs / 100).toLocaleString("en-US");
-    var remainder = abs % 100;
-    var body = remainder === 0 ? dollars : dollars + "." + String(remainder).padStart(2, "0");
+    var dollars = Math.round(amount);
+    var negative = dollars < 0;
+    var body = Math.abs(dollars).toLocaleString("en-US");
     return (negative ? "-$" : "$") + body;
+  }
+
+  function moneyLabel(amount) {
+    var dollars = Math.round(amount);
+    if (dollars === 0) return "Included";
+    return (dollars > 0 ? "+" : "") + formatDollars(dollars);
+  }
+
+  function formatGrams(grams) {
+    return (Math.round(grams * 10) / 10).toLocaleString("en-US", {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1
+    });
   }
 
   function choiceName(input) {
     var choice = input.closest(".choice");
     var name = choice && choice.querySelector(".choice-name");
     return name ? name.textContent.replace(/\s+/g, " ").trim() : input.value;
+  }
+
+  function priceCell(input) {
+    var choice = input.closest(".choice");
+    return choice && choice.querySelector(".choice-price");
+  }
+
+  function detailCell(input) {
+    var choice = input.closest(".choice");
+    return choice && choice.querySelector(".choice-detail");
   }
 
   function syncRhodium(form) {
@@ -62,9 +80,22 @@
     if (choice) choice.classList.toggle("is-unavailable", antique);
   }
 
-  function rhodiumText(input) {
-    if (input.disabled) return "Unavailable with antique";
-    return input.checked ? "Yes" : "No";
+  /* Every input that is on and not a metal, so its weight and price count. */
+  function activeAddOns(form) {
+    var list = [];
+    form.querySelectorAll("fieldset input").forEach(function (input) {
+      if (input.name === "metal" || input.disabled || !input.checked) return;
+      list.push(input);
+    });
+    return list;
+  }
+
+  function extraGramsOf(inputs) {
+    var extra = 0;
+    inputs.forEach(function (input) {
+      extra += parseAmount(input.dataset.addGrams) || 0;
+    });
+    return extra;
   }
 
   function render(setting) {
@@ -75,11 +106,62 @@
 
     syncRhodium(form);
 
-    var base = parseAmount(form.dataset.base);
-    var incomplete = base === null;
-    var adders = 0;
-    var rows = document.createDocumentFragment();
+    var job = price[form.id];
+    var metalInput = form.querySelector('input[name="metal"]:checked');
+    var perGram = job && metalInput ? job.metals[metalInput.value] : null;
+    var incomplete = !job || perGram == null;
 
+    var addOns = activeAddOns(form);
+    var extra = extraGramsOf(addOns);
+    var flat = 0;
+    addOns.forEach(function (input) {
+      var amount = parseAmount(input.dataset.price);
+      if (amount === null) incomplete = true;
+      else flat += amount;
+    });
+
+    /* Redraw each price, because a metal change moves the weight-based ones. */
+    if (job && perGram != null) {
+      form.querySelectorAll('input[name="metal"]').forEach(function (input) {
+        var rate = job.metals[input.value];
+        var cell = priceCell(input);
+        if (rate == null || !cell) return;
+        var quote = Math.round(job.labor + rate * (job.grams + extra));
+        cell.textContent = formatDollars(quote);
+        var karat = Number(input.dataset.karat);
+        var detail = detailCell(input);
+        if (detail && GOLD_DENSITY[karat]) {
+          var finished = (job.grams + extra) * GOLD_DENSITY[karat] / STERLING_DENSITY;
+          detail.textContent = "About " + formatGrams(finished) + " g finished.";
+        }
+      });
+
+      form.querySelectorAll("fieldset input").forEach(function (input) {
+        if (input.name === "metal") return;
+        var cell = priceCell(input);
+        if (!cell) return;
+        var own = parseAmount(input.dataset.price);
+        if (own === null) return;
+        var grams = parseAmount(input.dataset.addGrams) || 0;
+        cell.textContent = moneyLabel(own + perGram * grams);
+      });
+
+      var weights = setting.querySelector(".gold-weights");
+      if (weights) {
+        var lines = [];
+        form.querySelectorAll("input[data-karat]").forEach(function (input) {
+          var karat = Number(input.dataset.karat);
+          if (!GOLD_DENSITY[karat]) return;
+          var finished = (job.grams + extra) * GOLD_DENSITY[karat] / STERLING_DENSITY;
+          lines.push(formatGrams(finished) + " g in " + karat + "k");
+        });
+        if (lines.length) {
+          weights.textContent = "About " + lines.join(", and about ") + ".";
+        }
+      }
+    }
+
+    var rows = document.createDocumentFragment();
     form.querySelectorAll("fieldset").forEach(function (fieldset) {
       var legend = fieldset.querySelector("legend");
       var row = document.createElement("div");
@@ -89,30 +171,24 @@
 
       var addon = fieldset.querySelector('input[type="checkbox"]');
       if (addon) {
-        detail.textContent = addon.name === "rhodium" ? rhodiumText(addon) : (addon.checked ? "Yes" : "No");
-        if (!addon.disabled && addon.checked) {
-          var addonPrice = parseAmount(addon.dataset.price);
-          if (addonPrice === null) incomplete = true;
-          else adders += addonPrice;
-        }
+        if (addon.name === "rhodium" && addon.disabled) detail.textContent = "Unavailable with antique";
+        else detail.textContent = addon.checked ? "Yes" : "No";
       } else {
         var checked = fieldset.querySelector("input:checked");
         detail.textContent = checked ? choiceName(checked) : "Not selected";
-        if (!checked) {
-          incomplete = true;
-        } else {
-          var adder = parseAmount(checked.dataset.price);
-          if (adder === null) incomplete = true;
-          else adders += adder;
-        }
+        if (!checked) incomplete = true;
       }
 
       row.append(term, detail);
       rows.append(row);
     });
-
     list.replaceChildren(rows);
-    total.textContent = incomplete ? "No total yet" : formatDollars(base + adders);
+
+    if (incomplete) {
+      total.textContent = "No total yet";
+      return;
+    }
+    total.textContent = formatDollars(job.labor + perGram * (job.grams + extra) + flat);
   }
 
   document.querySelectorAll(".setting").forEach(function (setting) {
@@ -131,179 +207,6 @@
     render(setting);
     if (list) list.setAttribute("aria-live", "polite");
     if (total) total.setAttribute("aria-live", "polite");
-  });
-
-  /* Price build. Hours and the rate stay off the page. */
-
-  var TROY_GRAMS = 31.1034768;
-  var STERLING_DENSITY = 10.36;
-  var STERLING_FINE = 0.925;
-  var GOLD_LOSS = 1.2;
-  var COMPANY_PROFIT = 0.2;
-  var GOLD_DENSITY = { 14: 13.07, 18: 15.58 };
-  /* The build replaces this empty list from each setting.json. */
-  var work = {};
-  var savedSpot = { gold: 4095, silver: 56.4, live: false };
-  var spot = { gold: savedSpot.gold, silver: savedSpot.silver, live: false, pending: true };
-
-  function formatGrams(grams) {
-    return (Math.round(grams * 10) / 10).toLocaleString("en-US", {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1
-    });
-  }
-
-  function formatSpot(amount, digits) {
-    return "$" + amount.toLocaleString("en-US", {
-      minimumFractionDigits: digits,
-      maximumFractionDigits: digits
-    });
-  }
-
-  function perGram(ouncePrice) {
-    return ouncePrice / TROY_GRAMS;
-  }
-
-  function sellingPrice(labor, metal) {
-    return Math.round((labor + metal) * (1 + COMPANY_PROFIT));
-  }
-
-  function spotSentence(current) {
-    if (current.pending) return "Checking the metal price.";
-    var gold = formatSpot(current.gold, 0);
-    var silver = formatSpot(current.silver, 2);
-    if (current.live) return "Gold " + gold + " an ounce, silver " + silver + " an ounce.";
-    return "The live metal price did not load. Using gold " + gold + " an ounce and silver " + silver + " an ounce from October 22.";
-  }
-
-  function clearMetalPrices(form, weights, message) {
-    delete form.dataset.base;
-    var silver = form.querySelector('input[name="metal"][value="silver"]');
-    var silverPrice = silver && silver.closest(".choice").querySelector(".choice-price");
-    if (silverPrice) silverPrice.textContent = "—";
-    form.querySelectorAll("input[data-karat]").forEach(function (input) {
-      delete input.dataset.price;
-      var choice = input.closest(".choice");
-      var price = choice && choice.querySelector(".choice-price");
-      var detail = choice && choice.querySelector(".choice-detail");
-      if (price) price.textContent = "—";
-      if (detail) detail.textContent = message;
-    });
-    if (weights) weights.textContent = message;
-  }
-
-  function applyPrices(setting, current) {
-    var form = setting.querySelector(".options");
-    var weights = setting.querySelector(".gold-weights");
-    var spotLine = setting.querySelector(".spot");
-    if (!form) return;
-
-    if (spotLine) spotLine.textContent = spotSentence(current);
-
-    var job = work[form.id];
-    var grams = parseAmount(form.dataset.grams);
-    var ready = job && grams !== null && grams >= 0.1 && grams <= 40;
-    if (!ready) {
-      clearMetalPrices(form, weights, "Sterling weight is not set.");
-      render(setting);
-      return;
-    }
-
-    var labor = job.hours * job.rate;
-    var silverMetal = grams * STERLING_FINE * perGram(current.silver);
-    var silverQuote = sellingPrice(labor, silverMetal);
-    form.dataset.base = String(silverQuote);
-    var silverInput = form.querySelector('input[name="metal"][value="silver"]');
-    var silverChoice = silverInput && silverInput.closest(".choice");
-    var silverPrice = silverChoice && silverChoice.querySelector(".choice-price");
-    if (silverPrice) silverPrice.textContent = formatDollars(silverQuote);
-
-    var lines = [];
-    form.querySelectorAll("input[data-karat]").forEach(function (input) {
-      var karat = Number(input.dataset.karat);
-      if (!GOLD_DENSITY[karat]) return;
-      var finishedGrams = grams * GOLD_DENSITY[karat] / STERLING_DENSITY;
-      var fine = finishedGrams * GOLD_LOSS * (karat / 24);
-      var quote = sellingPrice(labor, fine * perGram(current.gold));
-      var addon = quote - silverQuote;
-      input.dataset.price = String(addon);
-      var choice = input.closest(".choice");
-      var price = choice && choice.querySelector(".choice-price");
-      var detail = choice && choice.querySelector(".choice-detail");
-      var finished = formatGrams(finishedGrams) + " g";
-      if (price) {
-        price.textContent = addon === 0 ? "Included" : (addon > 0 ? "+" : "") + formatDollars(addon);
-      }
-      if (detail) detail.textContent = "About " + finished + " finished. " + formatDollars(quote) + " in " + karat + "k.";
-      lines.push(finished + " in " + karat + "k");
-    });
-
-    if (weights && lines.length) {
-      weights.textContent = "About " + lines.join(", and about ") + ".";
-    }
-    render(setting);
-  }
-
-  function readSpot(data) {
-    var gold = Number(data && data.spot_usd_oz);
-    var silver = Number(data && data.silver_usd_oz);
-    if (!(gold > 500 && gold < 20000)) return null;
-    if (!(silver > 5 && silver < 500)) return null;
-    return { gold: gold, silver: silver, live: true };
-  }
-
-  fetch("https://xaus.com/api/v1/spot?compact=1", { cache: "no-store" })
-    .then(function (response) {
-      if (!response.ok) throw new Error("spot " + response.status);
-      return response.json();
-    })
-    .then(function (data) {
-      var live = readSpot(data);
-      if (!live) throw new Error("spot shape");
-      spot = live;
-    })
-    .catch(function () {
-      spot = savedSpot;
-    })
-    .then(function () {
-      document.querySelectorAll(".setting").forEach(function (setting) {
-        applyPrices(setting, spot);
-      });
-    });
-
-  /* Drop a photo in images/<slug>/ and reload. main.jpg is preferred.
-     jpeg, png, and webp with the same base name also show up. */
-  var photoExtensions = ["jpg", "jpeg", "png", "webp"];
-
-  document.querySelectorAll("img[data-base]").forEach(function (img) {
-    var base = img.getAttribute("data-base");
-    var mat = img.parentElement && img.parentElement.querySelector(".mat");
-    var probe = new Image();
-    var index = 0;
-    var retried = false;
-
-    function urlFor() {
-      var url = base + "." + photoExtensions[index];
-      if (retried) url += "?reload=" + Date.now();
-      return url;
-    }
-
-    probe.onload = function () {
-      img.src = probe.src;
-      img.hidden = false;
-      if (mat) mat.hidden = true;
-    };
-    probe.onerror = function () {
-      if (!retried) {
-        retried = true;
-        probe.src = urlFor();
-        return;
-      }
-      retried = false;
-      index += 1;
-      if (index < photoExtensions.length) probe.src = urlFor();
-    };
-    probe.src = urlFor();
   });
 
   function linkFor(id) {

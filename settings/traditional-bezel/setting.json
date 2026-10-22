@@ -1,11 +1,10 @@
 {
   "id": "traditional-bezel",
   "title": "Traditional bezel",
-  "order": 1,
+  "order": 2,
   "lede": "Completely handmade from scratch.",
   "grams": 2.5,
   "hours": 6,
-  "rate": 30,
   "stone": "Faceted stones, round or oval. A medium to large stone is ideal for this setting, because the ring is welded to the bezel. Be careful with a deep stone: it needs a much taller bezel, and that can look out of proportion.",
   "about": [
     "A traditional bezel holds a center diamond or gemstone in a custom-fitted rim of precious metal. The rim secures the stone without prongs, and it may encircle the stone completely or only in part. This setting is a full bezel: a continuous band of metal surrounds the whole perimeter, for edge protection and snag-free everyday wear. The stone is faceted, in a round or oval shape.",
@@ -23,6 +22,10 @@
     {
       "name": "Visual impact.",
       "text": "The metal frame can make the center stone look slightly larger, or more sharply defined."
+    },
+    {
+      "name": "Solid, and repairable for decades.",
+      "text": "A solid handmade piece can be sized, re-soldered, or restored years later. Hollow or plated factory pieces often melt or crack under a jeweler's torch."
     }
   ],
   "media": [
@@ -47,17 +50,41 @@
       "name": "Metal",
       "field": "metal",
       "choices": [
-        { "name": "Sterling silver", "value": "silver", "metal": "silver", "selected": true },
-        { "name": "14k gold", "value": "gold-14k", "karat": 14 }
+        {
+          "name": "Sterling silver",
+          "value": "silver",
+          "metal": "silver",
+          "selected": true
+        },
+        {
+          "name": "14k gold",
+          "value": "gold-14k",
+          "karat": 14
+        }
       ]
     },
     {
       "name": "Bezel skirt",
       "field": "skirt",
       "choices": [
-        { "name": "None", "value": "none", "price": 0, "selected": true },
-        { "name": "Braid-rope", "value": "braid-rope", "price": 20 },
-        { "name": "Square-twist", "value": "square-twist", "price": 20 }
+        {
+          "name": "None",
+          "value": "none",
+          "price": 0,
+          "selected": true
+        },
+        {
+          "name": "Braid-rope",
+          "value": "braid-rope",
+          "price": 20,
+          "addGrams": 0.3
+        },
+        {
+          "name": "Square-twist",
+          "value": "square-twist",
+          "price": 20,
+          "addGrams": 0.3
+        }
       ]
     },
     {
@@ -83,15 +110,24 @@
       "name": "Rhodium plate",
       "field": "rhodium",
       "rule": "Rhodium plate can be added to high polish. Antique is left unplated.",
-      "addon": { "name": "Add rhodium plate", "value": "yes", "price": 50 }
+      "addon": {
+        "name": "Add rhodium plate",
+        "value": "yes",
+        "price": 50
+      }
     },
     {
       "name": "Laser engrave",
       "field": "engrave",
       "flag": "laser",
-      "addon": { "name": "Add laser engrave", "value": "yes", "price": 25 }
+      "addon": {
+        "name": "Add laser engrave",
+        "value": "yes",
+        "price": 25
+      }
     }
   ],
   "fingerSize": "Finger size is required with every order. Ask for it when the setting is written down.",
-  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks."
+  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks. These are made one at a time, part time, so I take a limited number of orders at once.",
+  "weightNote": "Solid metal all the way through, with a reassuring weight on the finger. Nothing here is hollowed out or lightened to save material."
 }

@@ -2,16 +2,20 @@ import { access, readdir, readFile } from "node:fs/promises";
 
 const STERLING_DENSITY = 10.36;
 const GOLD_DENSITY = { 14: 13.07, 18: 15.58 };
+const TROY_GRAMS = 31.1034768;
+const STERLING_FINE = 0.925;
+const GOLD_LOSS = 1.2;
+const MARKUP = 1.2;
 const VIDEO = new Set(["mp4", "webm"]);
 const PHOTO = new Set(["jpg", "jpeg", "png", "webp"]);
-const SITE_FIELDS = ["name", "tagline", "description", "intro", "skip", "footer", "flags"];
+const SITE_FIELDS = ["name", "tagline", "description", "intro", "skip", "footer", "rate", "metal", "flags"];
 const SETTING_FIELDS = [
   "id", "title", "order", "lede", "grams", "hours", "rate", "weightNote",
   "stone", "about", "points", "media", "priceNote", "options",
   "fingerSize", "leadTime", "open",
 ];
 const GROUP_FIELDS = ["name", "field", "rule", "flag", "choices", "addon"];
-const CHOICE_FIELDS = ["name", "value", "price", "detail", "selected", "metal", "karat"];
+const CHOICE_FIELDS = ["name", "value", "price", "addGrams", "detail", "selected", "metal", "karat"];
 const ADDON_FIELDS = ["name", "value", "price", "detail"];
 const MEDIA_FIELDS = ["file", "caption", "alt"];
 
@@ -72,6 +76,10 @@ function formatGrams(grams) {
   });
 }
 
+function formatDollars(amount) {
+  return "$" + Math.round(amount).toLocaleString("en-US");
+}
+
 function moneyLabel(price) {
   if (price === 0) return "Included";
   const sign = price > 0 ? "+" : "-";
@@ -95,14 +103,39 @@ export async function loadSite() {
   const site = JSON.parse(await readFile(file, "utf8"));
   unknownKeys(file, site, SITE_FIELDS);
   for (const key of SITE_FIELDS) {
-    if (key === "footer" || key === "flags") continue;
+    if (key === "footer" || key === "flags" || key === "rate" || key === "metal") continue;
     needString(file, site, key);
   }
   if (site.footer == null) site.footer = "";
   if (typeof site.footer !== "string") fail(file, "footer needs text.");
   site.footer = site.footer.trim();
+  const rate = needNumber(file, site, "rate");
+  if (rate <= 0) fail(file, "rate needs to be greater than 0.");
+  site.rate = rate;
+  site.metal = metalOf(file, site.metal);
   site.flags = flagsOf(file, site.flags);
   return site;
+}
+
+function metalOf(file, metal) {
+  if (metal == null || typeof metal !== "object" || Array.isArray(metal)) {
+    fail(file, "metal needs gold, silver, and asOf.");
+  }
+  unknownKeys(file, metal, ["gold", "silver", "asOf"]);
+  const gold = needNumber(file, metal, "gold");
+  const silver = needNumber(file, metal, "silver");
+  if (!(gold > 500 && gold < 20000)) fail(file, "metal gold needs a price an ounce between 500 and 20000.");
+  if (!(silver > 5 && silver < 500)) fail(file, "metal silver needs a price an ounce between 5 and 500.");
+  return { gold, silver, asOf: needString(file, metal, "asOf") };
+}
+
+function perGramCharge(choice, metal) {
+  if (choice.silver) {
+    return STERLING_FINE * (metal.silver / TROY_GRAMS) * MARKUP;
+  }
+  const density = GOLD_DENSITY[choice.karat];
+  const finished = density / STERLING_DENSITY;
+  return finished * GOLD_LOSS * (choice.karat / 24) * (metal.gold / TROY_GRAMS) * MARKUP;
 }
 
 function flagsOf(file, flags) {
@@ -165,13 +198,19 @@ function choiceOf(file, group, choice) {
   if (isSilver && karat != null) fail(file, `${name} cannot be silver and gold.`);
   if (isSilver || karat != null) {
     if (choice.price != null) fail(file, `${name} takes its price from the metal market. Remove price.`);
+    if (choice.addGrams != null) fail(file, `${name} is a metal. Put extra weight on the option that adds it, not here.`);
     if (karat != null && !GOLD_DENSITY[karat]) {
       fail(file, `${name} needs karat 14 or 18.`);
     }
-    return { name, value, detail, selected, silver: isSilver, karat: karat ?? null, price: null };
+    return { name, value, detail, selected, silver: isSilver, karat: karat ?? null, price: null, addGrams: 0 };
   }
   const price = needNumber(file, choice, "price");
-  return { name, value, detail, selected, silver: false, karat: null, price };
+  let addGrams = 0;
+  if (choice.addGrams != null) {
+    addGrams = needNumber(file, choice, "addGrams");
+    if (addGrams < 0 || addGrams > 40) fail(file, `${name} addGrams needs to be between 0 and 40.`);
+  }
+  return { name, value, detail, selected, silver: false, karat: null, price, addGrams };
 }
 
 function optionsOf(file, options) {
@@ -220,7 +259,10 @@ function optionsOf(file, options) {
   return groups;
 }
 
-export async function loadSettings() {
+export async function loadSettings(site) {
+  if (!site || typeof site.rate !== "number") {
+    throw new Error("loadSettings needs the site, for the shop rate.");
+  }
   const root = "settings";
   let entries = [];
   try {
@@ -247,8 +289,9 @@ export async function loadSettings() {
     const grams = needNumber(file, raw, "grams");
     if (grams < 0.1 || grams > 40) fail(file, "grams needs to be between 0.1 and 40.");
     const hours = needNumber(file, raw, "hours");
-    const rate = needNumber(file, raw, "rate");
-    if (hours <= 0 || rate <= 0) fail(file, "hours and rate need to be greater than 0.");
+    const rate = raw.rate == null ? site.rate : needNumber(file, raw, "rate");
+    if (hours <= 0) fail(file, "hours needs to be greater than 0.");
+    if (rate <= 0) fail(file, "rate needs to be greater than 0.");
     const order = raw.order == null ? 0 : needNumber(file, raw, "order");
     const points = raw.points == null ? [] : raw.points;
     if (!Array.isArray(points)) fail(file, "points needs a list.");
@@ -288,18 +331,32 @@ export async function loadSettings() {
   return settings;
 }
 
-export function workList(settings) {
-  const work = {};
+/* The page gets the labor charge as one number, already marked up.
+   Hours, the rate, and the markup stay in the source files. */
+export function priceData(settings, site) {
+  const prices = {};
   for (const setting of settings) {
-    work[`${setting.id}-options`] = { hours: setting.hours, rate: setting.rate };
+    const metals = {};
+    for (const group of setting.options) {
+      if (group.field !== "metal") continue;
+      for (const choice of group.choices) {
+        metals[choice.value] = Number(perGramCharge(choice, site.metal).toFixed(4));
+      }
+    }
+    prices[`${setting.id}-options`] = {
+      labor: Number((setting.hours * setting.rate * MARKUP).toFixed(2)),
+      grams: setting.grams,
+      metals,
+    };
   }
-  return work;
+  return prices;
 }
 
 function inputTag(parts) {
   const attrs = [`type="${parts.type}"`, `name="${esc(parts.name)}"`, `value="${esc(parts.value)}"`];
   if (parts.karat != null) attrs.push(`data-karat="${parts.karat}"`);
   if (parts.price != null) attrs.push(`data-price="${parts.price}"`);
+  if (parts.addGrams) attrs.push(`data-add-grams="${parts.addGrams}"`);
   if (parts.checked) attrs.push("checked");
   if (parts.describedBy) attrs.push(`aria-describedby="${esc(parts.describedBy)}"`);
   return `<input ${attrs.join(" ")}>`;
@@ -341,6 +398,7 @@ function fieldsetHtml(setting, group) {
         value: choice.value,
         karat: choice.karat,
         price: choice.silver ? 0 : choice.price,
+        addGrams: choice.addGrams,
         checked: choice.selected,
       })));
     }
@@ -402,22 +460,36 @@ function goldFallback(setting) {
   return `About ${bits[0]}, and about ${bits.slice(1).join(", and about ")}.`;
 }
 
-function prepare(setting) {
+/* The first price the page shows is the sterling one, with every
+   default choice selected. The script redraws these as options change. */
+function prepare(setting, site) {
+  const labor = setting.hours * setting.rate * MARKUP;
+  const metalGroup = setting.options.find((group) => group.field === "metal");
+  const startMetal = metalGroup.choices.find((choice) => choice.selected) || metalGroup.choices[0];
+  const startPerGram = perGramCharge(startMetal, site.metal);
+  const quote = (choice, extra) =>
+    Math.round(labor + perGramCharge(choice, site.metal) * (setting.grams + extra));
+
   for (const group of setting.options) {
     if (group.addon) {
       group.addon.priceText = moneyLabel(group.addon.price);
-    } else {
-      for (const choice of group.choices) {
-        if (choice.silver || choice.karat) {
-          choice.priceText = "—";
-          if (choice.karat && !choice.detail) choice.detail = "Price loading.";
-        } else {
-          choice.priceText = moneyLabel(choice.price);
-        }
+      continue;
+    }
+    for (const choice of group.choices) {
+      if (choice.silver || choice.karat) {
+        choice.priceText = formatDollars(quote(choice, 0));
+        continue;
       }
+      choice.priceText = moneyLabel(Math.round(choice.price + startPerGram * choice.addGrams));
     }
   }
   return setting;
+}
+
+function metalSentence(site) {
+  const gold = site.metal.gold.toLocaleString("en-US", { maximumFractionDigits: 0 });
+  const silver = site.metal.silver.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return `Figured at gold $${gold} an ounce and silver $${silver} an ounce, ${site.metal.asOf}.`;
 }
 
 function offeredOptions(setting, site) {
@@ -431,7 +503,7 @@ function offeredOptions(setting, site) {
 }
 
 function articleHtml(setting, site) {
-  prepare(setting);
+  prepare(setting, site);
   const options = offeredOptions(setting, site);
   const id = setting.id;
   const grams = formatGrams(setting.grams);
@@ -484,7 +556,7 @@ ${points}
               <dt>Approximate finished weight</dt>
               <dd>
                 <p>${esc(grams)} g in sterling silver.</p>${goldLine}${weightNote}
-                <p class="spot" id="${esc(id)}-spot" aria-live="polite">Checking the metal price.</p>
+                <p class="spot" id="${esc(id)}-spot">${esc(metalSentence(site))}</p>
               </dd>
             </div>
             <div>

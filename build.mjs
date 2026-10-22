@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { access, cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { minify } from "terser";
-import { loadSettings, loadSite, renderPage, workList } from "./catalog-page.mjs";
+import { loadSettings, loadSite, priceData, renderPage } from "./catalog-page.mjs";
 
 async function removeFinderFiles(dir) {
   const { readdir } = await import("node:fs/promises");
@@ -23,7 +23,7 @@ async function absent(path) {
 }
 
 const site = await loadSite();
-const settings = await loadSettings();
+const settings = await loadSettings(site);
 const template = await readFile("index.html", "utf8");
 const html = renderPage(template, site, settings);
 
@@ -49,10 +49,18 @@ await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
 
 const source = await readFile("catalog.js", "utf8");
-const filled = source.replace("var work = {};", () => `var work = ${JSON.stringify(workList(settings))};`);
-if (filled === source) throw new Error("catalog.js is missing the work list.");
+const prices = priceData(settings, site);
+const filled = source.replace("var price = {};", () => `var price = ${JSON.stringify(prices)};`);
+if (filled === source) throw new Error("catalog.js is missing the price list.");
 const result = await minify(filled, { compress: true, mangle: true });
 if (!result.code) throw new Error("The catalog script did not minify.");
+/* The published script carries the labor charge as one number.
+   Hours and the hourly rate stay in the source files. */
+for (const word of ["hours", "rate"]) {
+  if (result.code.includes(word)) {
+    throw new Error(`The published script names "${word}". Keep hours and the rate off the page.`);
+  }
+}
 const version = createHash("sha256").update(result.code).digest("hex").slice(0, 10);
 const page = html.replace('src="catalog.min.js"', `src="catalog.min.js?v=${version}"`);
 await writeFile("dist/index.html", page);
