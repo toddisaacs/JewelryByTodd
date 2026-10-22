@@ -49,8 +49,7 @@
       "field": "metal",
       "choices": [
         { "name": "Sterling silver", "value": "silver", "metal": "silver", "selected": true },
-        { "name": "14k gold", "value": "gold-14k", "karat": 14 },
-        { "name": "18k gold", "value": "gold-18k", "karat": 18 }
+        { "name": "14k gold", "value": "gold-14k", "karat": 14 }
       ]
     },
     {
