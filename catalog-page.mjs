@@ -94,7 +94,13 @@ export async function loadSite() {
   const file = "site.json";
   const site = JSON.parse(await readFile(file, "utf8"));
   unknownKeys(file, site, SITE_FIELDS);
-  for (const key of SITE_FIELDS) needString(file, site, key);
+  for (const key of SITE_FIELDS) {
+    if (key === "footer") continue;
+    needString(file, site, key);
+  }
+  if (site.footer == null) site.footer = "";
+  if (typeof site.footer !== "string") fail(file, "footer needs text.");
+  site.footer = site.footer.trim();
   return site;
 }
 
@@ -497,7 +503,9 @@ export function renderPage(template, site, settings) {
     name: esc(site.name),
     tagline: esc(site.tagline),
     intro: esc(site.intro),
-    footer: esc(site.footer),
+    footer: site.footer
+      ? `    <footer class="site-footer">\n      <p>${esc(site.footer)}</p>\n    </footer>`
+      : "",
     navItems: settings.map((setting) => `          <li>
             <a href="#${esc(setting.id)}">
               <span class="index-title">${esc(setting.title)}</span>

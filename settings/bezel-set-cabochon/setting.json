@@ -2,15 +2,14 @@
   "id": "bezel-set-cabochon",
   "title": "Bezel Set Cabochon",
   "order": 1,
-  "lede": "A low bezel for cabochons.",
+  "lede": "low or full bezel for cabochons.",
   "grams": 2.5,
   "hours": 6,
   "rate": 30,
   "weightNote": "For the thin half-round shank. Working weight, until a finished ring is weighed.",
   "stone": "Cabochons, including ovals and less regular shapes. Faceted stones use the traditional bezel.",
   "about": [
-    "This setting holds a cabochon in a low bezel. A metal rim follows the outline of the stone and protects the edge. The ring stays low on the hand. The shape can follow an oval or a less regular cabochon.",
-    "The traditional bezel is the setting for faceted stones. This one is for cabochons."
+    "This setting holds a cabochon in a low bezel. A metal rim follows the outline of the stone and protects the edge. The ring stays low on the hand. The shape can follow an oval or a less regular cabochon."
   ],
   "points": [
     {
@@ -43,7 +42,7 @@
       "caption": "Plain half-round shanks. This is the baseline for the weight."
     }
   ],
-  "priceNote": "Included is part of the sterling price: the half-round shank and plain shoulders. The price shown is the price at the time of the order. It follows the metal price.",
+  "priceNote": "This is an estimate based on the design and the metal weight. Prices fluctuate with the metal price, the size of the piece, and the options.",
   "options": [
     {
       "name": "Metal",
@@ -94,7 +93,7 @@
     }
   ],
   "fingerSize": "Finger size is required with every order. Ask for it when the setting is written down.",
-  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks.",
+  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks for fabrication.",
   "open": [
     "Weigh a finished silver ring with the thin half-round shank. It is 2.5 g for now.",
     "Weigh the first gold ring to confirm the estimate."
