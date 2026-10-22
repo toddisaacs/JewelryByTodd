@@ -8,8 +8,9 @@
    The total stays "No total yet" until the base and every selected
    add-on are numbers. Antique finish clears and disables rhodium.
 
-   The finished sterling weight lives on the form as data-grams="2.5".
-   Hours and the hourly rate live in the work list below, not on the page.
+   The finished sterling weight lives on the form as data-grams.
+   Hours and the hourly rate live in settings/<id>/setting.json.
+   The build copies them into the work list below. They are not on the page.
    Company profit is 20% of labor plus metal. The page shows only the result.
    The result is rounded to the nearest dollar and is the order price.
 
@@ -140,9 +141,8 @@
   var GOLD_LOSS = 1.2;
   var COMPANY_PROFIT = 0.2;
   var GOLD_DENSITY = { 14: 13.07, 18: 15.58 };
-  var work = {
-    "traditional-bezel-options": { hours: 6, rate: 30 }
-  };
+  /* The build replaces this empty list from each setting.json. */
+  var work = {};
   var savedSpot = { gold: 4095, silver: 56.4, live: false };
   var spot = { gold: savedSpot.gold, silver: savedSpot.silver, live: false, pending: true };
 

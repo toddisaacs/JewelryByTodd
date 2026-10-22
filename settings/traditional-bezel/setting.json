@@ -1,0 +1,102 @@
+{
+  "id": "traditional-bezel",
+  "title": "Traditional bezel",
+  "order": 1,
+  "lede": "Completely handmade from scratch.",
+  "grams": 2.5,
+  "hours": 6,
+  "rate": 30,
+  "weightNote": "Working weight, until a finished gold ring is weighed.",
+  "stone": "Faceted stones, round or oval. A medium to large stone is ideal for this setting, because the ring is welded to the bezel. Be careful with a deep stone: it needs a much taller bezel, and that can look out of proportion.",
+  "about": [
+    "A traditional bezel holds a center diamond or gemstone in a custom-fitted rim of precious metal. The rim secures the stone without prongs, and it may encircle the stone completely or only in part. This setting is a full bezel: a continuous band of metal surrounds the whole perimeter, for edge protection and snag-free everyday wear. The stone is faceted, in a round or oval shape.",
+    "Bezel settings date back to ancient Egyptian, Greek, and Roman metalwork. They became widely popular in the Art Deco era of the 1920s and 1930s for their clean, geometric lines."
+  ],
+  "points": [
+    {
+      "name": "High security.",
+      "text": "The metal collar firmly locks the stone in, so there is less risk of losing a gem than with prongs."
+    },
+    {
+      "name": "Snag-free profile.",
+      "text": "A smooth, low profile keeps the ring from catching on clothing, hair, or everyday objects."
+    },
+    {
+      "name": "Visual impact.",
+      "text": "The metal frame can make the center stone look slightly larger, or more sharply defined."
+    }
+  ],
+  "media": [
+    {
+      "file": "lab-alex.mp4",
+      "caption": "Lab Alex traditional bezel."
+    },
+    {
+      "file": "IMG_4322.jpeg",
+      "alt": "Front view of a traditional bezel with a rope edge and a round purple stone, on a black display stand.",
+      "caption": "Front of the setting, with the rope edge around the stone."
+    },
+    {
+      "file": "IMG_4321.jpeg",
+      "alt": "Side view of a traditional bezel with a rope edge, showing the band and the height of the setting.",
+      "caption": "Side view, showing the rope edge and the band."
+    }
+  ],
+  "priceNote": "Included is part of the sterling price: no skirt, high polish, and antique. The price shown is the price at the time of the order. It follows the metal price.",
+  "options": [
+    {
+      "name": "Metal",
+      "field": "metal",
+      "choices": [
+        { "name": "Sterling silver", "value": "silver", "metal": "silver", "selected": true },
+        { "name": "14k gold", "value": "gold-14k", "karat": 14 },
+        { "name": "18k gold", "value": "gold-18k", "karat": 18 }
+      ]
+    },
+    {
+      "name": "Bezel skirt",
+      "field": "skirt",
+      "choices": [
+        { "name": "None", "value": "none", "price": 0, "selected": true },
+        { "name": "Braid-rope", "value": "braid-rope", "price": 20 },
+        { "name": "Square-twist", "value": "square-twist", "price": 20 }
+      ]
+    },
+    {
+      "name": "Finish",
+      "field": "finish",
+      "choices": [
+        {
+          "name": "High polish",
+          "value": "high-polish",
+          "price": 0,
+          "detail": "Bright, reflective metal.",
+          "selected": true
+        },
+        {
+          "name": "Antique",
+          "value": "antique",
+          "price": 0,
+          "detail": "Dark in the grooves of the skirt, so the skirt has contrast. Left unplated."
+        }
+      ]
+    },
+    {
+      "name": "Rhodium plate",
+      "field": "rhodium",
+      "rule": "Rhodium plate can be added to high polish. Antique is left unplated.",
+      "addon": { "name": "Add rhodium plate", "value": "yes", "price": 50 }
+    },
+    {
+      "name": "Laser engrave",
+      "field": "engrave",
+      "addon": { "name": "Add laser engrave", "value": "yes", "price": 25 }
+    }
+  ],
+  "fingerSize": "Finger size is required with every order. Ask for it when the setting is written down.",
+  "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks.",
+  "open": [
+    "Weigh a finished silver ring and set the grams in the page. It is 2.5 g for now.",
+    "Weigh the first gold ring to confirm the estimate."
+  ]
+}

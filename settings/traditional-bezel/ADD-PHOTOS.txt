@@ -10,7 +10,7 @@ IMG_4321.jpeg   side view, rope edge and band
 
 A photo around 2 MB is a normal size. A video around 10–15 MB is a normal size. The published catalog can hold up to 1 GB total. One file must stay under 100 MB, and GitHub warns above 50 MB.
 
-To add another still, put the JPG or JPEG in this folder and say which view it is.
-To add another video, put an mp4 in this folder, or send an X link and a smaller copy can be saved here. Leave the original 4K file off the site.
+To add another still, put the JPG or JPEG in this folder and add it under media in setting.json.
+To add another video, put an mp4 in this folder and add it under media in setting.json. A smaller copy can be saved here from an X link. Leave the original 4K file off the site.
 
 The share link for this setting is the catalog address plus #traditional-bezel.

@@ -1,0 +1,11 @@
+Each folder here is one setting. The publish build reads the folders and writes the page.
+
+To add a setting, copy the traditional-bezel folder and give the copy a new name. Open setting.json and change the id so it matches the folder name. Edit the title, the description, the weight, and the options.
+
+To add a photo or a video, put the file in that setting's folder and add it under media. A still around 2 MB is a normal size. Use a 720p or 1080p mp4. Leave the original 4K file off the site.
+
+To add an option, add a choice under that option. price 0 means it is included. An addon is a checkbox. The finish value antique turns off the addon whose field is rhodium.
+
+grams is the finished sterling weight. hours and rate are the labor for that setting. The page uses them to price the metal and does not show them.
+
+Push the folder to GitHub. The publish build writes the page.
