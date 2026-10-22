@@ -1,0 +1,10 @@
+{
+  "name": "jewelry-by-todd",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "terser": "^5.44.0"
+  }
+}
