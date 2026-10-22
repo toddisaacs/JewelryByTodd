@@ -15,17 +15,17 @@
 
   <div class="page">
     <header class="intro">
-      <h1>{{name}}</h1>
+      <h1><a href="#catalog">{{name}}</a></h1>
       <p class="tagline">{{tagline}}</p>
       <p>{{intro}}</p>
+    </header>
+
+    <main id="catalog">
       <nav class="style-index" aria-label="Settings">
         <ul>
 {{navItems}}
         </ul>
       </nav>
-    </header>
-
-    <main id="catalog">
 {{articles}}
     </main>
 

@@ -358,8 +358,43 @@
     });
   });
 
+  function hashId() {
+    return decodeURIComponent(window.location.hash.replace(/^#/, ""));
+  }
+
+  function openSetting() {
+    var id = hashId();
+    var match = null;
+    document.querySelectorAll(".setting").forEach(function (setting) {
+      if (id === setting.id || id.indexOf(setting.id + "-") === 0) match = setting;
+    });
+    return match;
+  }
+
+  function loadMedia(setting) {
+    setting.querySelectorAll("img[data-src]").forEach(function (img) {
+      if (!img.getAttribute("src")) img.src = img.getAttribute("data-src");
+    });
+    setting.querySelectorAll("video").forEach(function (video) {
+      var source = video.querySelector("source[data-src]");
+      if (source && !source.getAttribute("src")) {
+        source.src = source.getAttribute("data-src");
+        video.load();
+      }
+      var play = video.play();
+      if (play && play.catch) play.catch(function () {});
+    });
+  }
+
+  function pauseMedia(except) {
+    document.querySelectorAll(".setting video").forEach(function (video) {
+      if (except && except.contains(video)) return;
+      video.pause();
+    });
+  }
+
   function markCurrentSetting() {
-    var id = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+    var id = hashId();
     document.querySelectorAll(".style-index a").forEach(function (link) {
       var settingId = (link.getAttribute("href") || "").replace(/^#/, "");
       var current = id === settingId || id.indexOf(settingId + "-") === 0;
@@ -368,19 +403,49 @@
     });
   }
 
+  function showView() {
+    var open = openSetting();
+    document.body.classList.toggle("is-setting", Boolean(open));
+    document.body.classList.toggle("is-list", !open);
+    document.querySelectorAll(".setting").forEach(function (setting) {
+      if (setting === open) setting.removeAttribute("hidden");
+      else setting.setAttribute("hidden", "");
+    });
+    if (open) loadMedia(open);
+    pauseMedia(open);
+    markCurrentSetting();
+  }
+
   function focusHashedSetting() {
-    var id = decodeURIComponent(window.location.hash.replace(/^#/, ""));
-    if (!id) return;
+    var id = hashId();
+    if (!id || id === "catalog") return;
     var target = document.getElementById(id);
     if (!target) return;
     if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
     target.focus({ preventScroll: true });
   }
 
-  markCurrentSetting();
-  focusHashedSetting();
-  window.addEventListener("hashchange", function () {
-    markCurrentSetting();
+  function followHash() {
+    showView();
     focusHashedSetting();
+    if (openSetting()) {
+      (document.getElementById(hashId()) || openSetting()).scrollIntoView();
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }
+
+  document.addEventListener("click", function (event) {
+    var link = event.target.closest && event.target.closest("a[href]");
+    if (!link || event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    var href = link.getAttribute("href");
+    if (!href || href.charAt(0) !== "#") return;
+    event.preventDefault();
+    if (location.hash !== href) location.hash = href;
+    followHash();
   });
+
+  followHash();
+  window.addEventListener("hashchange", followHash);
 })();

@@ -345,10 +345,10 @@ function mediaFigure(setting, item, kind) {
   const inner = pad + "  ";
   const src = `images/${setting.id}/${item.file}`;
   const body = item.kind === "video"
-    ? `${inner}<video class="setting-video" autoplay muted playsinline controls preload="metadata">
-${inner}  <source src="${esc(src)}" type="video/${extensionOf(item.file)}">
+    ? `${inner}<video class="setting-video" autoplay muted playsinline controls preload="none">
+${inner}  <source data-src="${esc(src)}" type="video/${extensionOf(item.file)}">
 ${inner}</video>`
-    : `${inner}<img src="${esc(src)}" alt="${esc(item.alt)}">`;
+    : `${inner}<img data-src="${esc(src)}" alt="${esc(item.alt)}">`;
   return `${pad}<figure class="photo photo-${kind}">
 ${body}
 ${inner}<figcaption>${esc(item.caption)}</figcaption>
@@ -427,8 +427,9 @@ ${setting.open.map((item) => `              <li>${esc(item)}</li>`).join("\n")}
           </section>`
     : "";
 
-  return `      <article class="setting" id="${esc(id)}" tabindex="-1" aria-labelledby="${esc(id)}-title">
+  return `      <article class="setting" id="${esc(id)}" tabindex="-1" aria-labelledby="${esc(id)}-title" hidden>
         <header class="setting-heading">
+          <p class="back"><a href="#catalog">All settings</a></p>
           <h2 id="${esc(id)}-title">${esc(setting.title)}</h2>
           <p class="permalink">
             <a href="#${esc(id)}">#${esc(id)}</a>
@@ -497,7 +498,12 @@ export function renderPage(template, site, settings) {
     tagline: esc(site.tagline),
     intro: esc(site.intro),
     footer: esc(site.footer),
-    navItems: settings.map((setting) => `          <li><a href="#${esc(setting.id)}">${esc(setting.title)}</a></li>`).join("\n"),
+    navItems: settings.map((setting) => `          <li>
+            <a href="#${esc(setting.id)}">
+              <span class="index-title">${esc(setting.title)}</span>
+              <span class="index-lede">${esc(setting.lede)}</span>
+            </a>
+          </li>`).join("\n"),
     articles: settings.map((setting) => articleHtml(setting)).join("\n\n"),
   };
   let html = template;
