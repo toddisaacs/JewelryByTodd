@@ -60,8 +60,7 @@
             <a href="#traditional-bezel">#traditional-bezel</a>
             <button type="button" class="copy-link" data-id="traditional-bezel">Copy link</button>
           </p>
-          <p class="status">Weight, stone limits, and prices for this style are not final yet.</p>
-          <p class="lede">A traditional bezel holds the stone with a metal rim around the edge. The skirt under that rim is part of the order: none, a braid-rope, or a square-twist.</p>
+          <p class="lede">Completely handmade from scratch.</p>
         </header>
 
         <div class="setting-photos" id="traditional-bezel-photos" tabindex="-1">
@@ -84,71 +83,81 @@
         </div>
 
         <div class="setting-body">
+          <section class="about" aria-label="About this setting">
+            <p>A traditional bezel holds a center diamond or gemstone in a custom-fitted rim of precious metal. The rim secures the stone without prongs, and it may encircle the stone completely or only in part. This setting is a full bezel: a continuous band of metal surrounds the whole perimeter, for edge protection and snag-free everyday wear. The stone is faceted, in a round or oval shape.</p>
+            <p>Bezel settings date back to ancient Egyptian, Greek, and Roman metalwork. They became widely popular in the Art Deco era of the 1920s and 1930s for their clean, geometric lines.</p>
+            <ul class="points">
+              <li><strong>High security.</strong> The metal collar firmly locks the stone in, so there is less risk of losing a gem than with prongs.</li>
+              <li><strong>Snag-free profile.</strong> A smooth, low profile keeps the ring from catching on clothing, hair, or everyday objects.</li>
+              <li><strong>Visual impact.</strong> The metal frame can make the center stone look slightly larger, or more sharply defined.</li>
+            </ul>
+          </section>
+
           <dl class="facts">
             <div>
               <dt>Approximate finished weight</dt>
-              <dd><span class="blank">[X] g</span></dd>
+              <dd>
+                2.5 g in sterling silver. 3.5 g in gold.
+                <p class="sample">Working weights. These will be measured on a finished ring.</p>
+              </dd>
             </div>
             <div>
               <dt>Stone size and shape</dt>
-              <dd>
-                <span class="blank">[Write the limits and any exceptions]</span>
-                <p class="sample">Sample of the kind of note that goes in the line above: “Best for 8–12 mm round or oval cabs. Square stones may need adjustment.”</p>
-              </dd>
+              <dd>Faceted stones, round or oval. A medium to large stone is ideal for this setting, because the ring is welded to the bezel. Be careful with a deep stone: it needs a much taller bezel, and that can look out of proportion.</dd>
             </div>
           </dl>
 
-          <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="" action="#">
-            <p class="price-note">Amounts shown as $XXX or +$XX are not final. Included marks the options in the sterling base for now: no skirt, and high polish.</p>
+          <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="225" action="#">
+            <p class="price-note">Included is part of the $225 sterling price: no skirt, and high polish. The total stays blank if antique is selected, because that add-on is not set.</p>
 
             <fieldset>
               <legend>Metal</legend>
               <label class="choice">
-                <input type="radio" name="metal" value="silver" checked>
+                <input type="radio" name="metal" value="silver" data-price="0" checked>
                 <span class="choice-text">
                   <span class="choice-name">Sterling silver</span>
                 </span>
-                <span class="choice-price">$XXX</span>
+                <span class="choice-price">$225</span>
               </label>
               <label class="choice">
-                <input type="radio" name="metal" value="gold">
+                <input type="radio" name="metal" value="gold" data-price="90">
                 <span class="choice-text">
                   <span class="choice-name">Gold</span>
-                  <span class="choice-detail">Karat not set yet. This amount is added to the sterling price.</span>
+                  <span class="choice-detail">Corresponding price for 3.5 g, scaled from the silver price. $315 in gold. Karat is not set yet.</span>
                 </span>
-                <span class="choice-price">+$XX</span>
+                <span class="choice-price">+$90</span>
               </label>
             </fieldset>
 
             <fieldset>
               <legend>Bezel skirt</legend>
               <label class="choice">
-                <input type="radio" name="skirt" value="none" checked>
+                <input type="radio" name="skirt" value="none" data-price="0" checked>
                 <span class="choice-text">
                   <span class="choice-name">None</span>
                 </span>
                 <span class="choice-price">Included</span>
               </label>
               <label class="choice">
-                <input type="radio" name="skirt" value="braid-rope">
+                <input type="radio" name="skirt" value="braid-rope" data-price="20">
                 <span class="choice-text">
                   <span class="choice-name">Braid-rope</span>
                 </span>
-                <span class="choice-price">+$XX</span>
+                <span class="choice-price">+$20</span>
               </label>
               <label class="choice">
-                <input type="radio" name="skirt" value="square-twist">
+                <input type="radio" name="skirt" value="square-twist" data-price="20">
                 <span class="choice-text">
                   <span class="choice-name">Square-twist</span>
                 </span>
-                <span class="choice-price">+$XX</span>
+                <span class="choice-price">+$20</span>
               </label>
             </fieldset>
 
             <fieldset>
               <legend>Finish</legend>
               <label class="choice">
-                <input type="radio" name="finish" value="high-polish" checked>
+                <input type="radio" name="finish" value="high-polish" data-price="0" checked>
                 <span class="choice-text">
                   <span class="choice-name">High polish</span>
                   <span class="choice-detail">Bright, reflective metal.</span>
@@ -159,29 +168,21 @@
                 <input type="radio" name="finish" value="antique">
                 <span class="choice-text">
                   <span class="choice-name">Antique</span>
-                  <span class="choice-detail">Darkened finish. Left unplated.</span>
+                  <span class="choice-detail">Darkened finish. Left unplated. The add-on is not set yet.</span>
                 </span>
-                <span class="choice-price">+$XX</span>
-              </label>
-              <label class="choice">
-                <input type="radio" name="finish" value="satin">
-                <span class="choice-text">
-                  <span class="choice-name">Satin</span>
-                  <span class="choice-detail">Soft, low-sheen metal.</span>
-                </span>
-                <span class="choice-price">+$XX</span>
+                <span class="choice-price">Not set</span>
               </label>
             </fieldset>
 
             <fieldset>
               <legend>Rhodium plate</legend>
-              <p class="rule" id="traditional-bezel-rhodium-rule">Rhodium plate can be added to high polish or satin. Antique is left unplated.</p>
+              <p class="rule" id="traditional-bezel-rhodium-rule">Rhodium plate can be added to high polish. Antique is left unplated.</p>
               <label class="choice">
-                <input type="checkbox" name="rhodium" value="yes" aria-describedby="traditional-bezel-rhodium-rule">
+                <input type="checkbox" name="rhodium" value="yes" data-price="50" aria-describedby="traditional-bezel-rhodium-rule">
                 <span class="choice-text">
                   <span class="choice-name">Add rhodium plate</span>
                 </span>
-                <span class="choice-price">+$XX</span>
+                <span class="choice-price">+$50</span>
               </label>
             </fieldset>
 
@@ -204,18 +205,15 @@
             <h3>Finger size</h3>
             <p>Finger size is required with every order. Ask for it when the setting is written down.</p>
             <h3>Lead time</h3>
-            <p>The setting is made to order once the stone is chosen. Current lead time: <span class="blank">[X weeks]</span>.</p>
+            <p>The setting is made to order once the stone is chosen. Allow 2 weeks.</p>
           </section>
 
           <section class="confirm" aria-labelledby="traditional-bezel-confirm">
             <h3 id="traditional-bezel-confirm">Still to fill in</h3>
             <ul>
-              <li>Finished weight in grams</li>
-              <li>Stone size and shape limits, and any exceptions</li>
-              <li>Sterling base price</li>
-              <li>Gold karat and the gold add-on</li>
-              <li>Add-on prices for braid-rope, square-twist, antique, satin, and rhodium plate</li>
-              <li>Current lead time</li>
+              <li>Confirm the finished weight. Working figures are 2.5 g in sterling silver and 3.5 g in gold.</li>
+              <li>Gold karat</li>
+              <li>Antique finish add-on, if there is one</li>
             </ul>
           </section>
         </div>
