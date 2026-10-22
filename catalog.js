@@ -407,10 +407,6 @@
     var open = openSetting();
     document.body.classList.toggle("is-setting", Boolean(open));
     document.body.classList.toggle("is-list", !open);
-    document.querySelectorAll(".setting").forEach(function (setting) {
-      if (setting === open) setting.removeAttribute("hidden");
-      else setting.setAttribute("hidden", "");
-    });
     if (open) loadMedia(open);
     pauseMedia(open);
     markCurrentSetting();
@@ -425,27 +421,10 @@
     target.focus({ preventScroll: true });
   }
 
-  function followHash() {
+  showView();
+  focusHashedSetting();
+  window.addEventListener("hashchange", function () {
     showView();
     focusHashedSetting();
-    if (openSetting()) {
-      (document.getElementById(hashId()) || openSetting()).scrollIntoView();
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }
-
-  document.addEventListener("click", function (event) {
-    var link = event.target.closest && event.target.closest("a[href]");
-    if (!link || event.defaultPrevented || event.button !== 0) return;
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    var href = link.getAttribute("href");
-    if (!href || href.charAt(0) !== "#") return;
-    event.preventDefault();
-    if (location.hash !== href) location.hash = href;
-    followHash();
   });
-
-  followHash();
-  window.addEventListener("hashchange", followHash);
 })();

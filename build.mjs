@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { access, cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { minify } from "terser";
 import { loadSettings, loadSite, renderPage, workList } from "./catalog-page.mjs";
@@ -46,13 +47,15 @@ for (const setting of settings) {
 
 await rm("dist", { recursive: true, force: true });
 await mkdir("dist", { recursive: true });
-await writeFile("dist/index.html", html);
 
 const source = await readFile("catalog.js", "utf8");
 const filled = source.replace("var work = {};", () => `var work = ${JSON.stringify(workList(settings))};`);
 if (filled === source) throw new Error("catalog.js is missing the work list.");
 const result = await minify(filled, { compress: true, mangle: true });
 if (!result.code) throw new Error("The catalog script did not minify.");
+const version = createHash("sha256").update(result.code).digest("hex").slice(0, 10);
+const page = html.replace('src="catalog.min.js"', `src="catalog.min.js?v=${version}"`);
+await writeFile("dist/index.html", page);
 await writeFile("dist/catalog.min.js", result.code);
 
 await cp("styles.css", "dist/styles.css");

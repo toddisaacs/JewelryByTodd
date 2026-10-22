@@ -427,7 +427,7 @@ ${setting.open.map((item) => `              <li>${esc(item)}</li>`).join("\n")}
           </section>`
     : "";
 
-  return `      <article class="setting" id="${esc(id)}" tabindex="-1" aria-labelledby="${esc(id)}-title" hidden>
+  return `      <article class="setting" id="${esc(id)}" tabindex="-1" aria-labelledby="${esc(id)}-title">
         <header class="setting-heading">
           <p class="back"><a href="#catalog">All settings</a></p>
           <h2 id="${esc(id)}-title">${esc(setting.title)}</h2>
@@ -502,6 +502,7 @@ export function renderPage(template, site, settings) {
             <a href="#${esc(setting.id)}">
               <span class="index-title">${esc(setting.title)}</span>
               <span class="index-lede">${esc(setting.lede)}</span>
+              <span class="index-open">Open</span>
             </a>
           </li>`).join("\n"),
     articles: settings.map((setting) => articleHtml(setting)).join("\n\n"),

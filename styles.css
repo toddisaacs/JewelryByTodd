@@ -126,7 +126,10 @@ h1 a {
 
 .style-index a {
   display: grid;
-  gap: 0.4rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 1.5rem;
+  row-gap: 0.4rem;
+  align-items: center;
   padding: 1.35rem 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -142,8 +145,19 @@ h1 a {
   letter-spacing: -0.02em;
 }
 
+.index-title,
+.index-lede {
+  grid-column: 1;
+}
+
 .index-lede {
   max-width: 38rem;
+  color: var(--muted);
+}
+
+.index-open {
+  grid-column: 2;
+  grid-row: 1 / span 2;
   color: var(--muted);
 }
 
@@ -167,14 +181,13 @@ h1 a {
 }
 
 .setting {
-  display: grid;
+  display: none;
   gap: 2.75rem;
 }
 
-.setting:not([hidden]) + .setting:not([hidden]) {
-  margin-top: 5rem;
-  padding-top: 4.5rem;
-  border-top: 1px solid var(--line);
+.setting:target,
+.setting:has(:target) {
+  display: grid;
 }
 
 .back {
@@ -617,7 +630,9 @@ body.is-setting .intro {
     display: none;
   }
 
-  .setting {
+  .setting,
+  .setting:target,
+  .setting:has(:target) {
     display: block;
   }
 
