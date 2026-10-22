@@ -42,6 +42,7 @@
         Photos: save files in images/<slug>/ and point each <img src> at the file.
         A still around 2 MB is a normal size.
         Video: save an mp4 next to the stills and point a <video> at it.
+        Use autoplay muted playsinline controls so the clip starts playing with the sound off.
         A phone-sized copy, around 720p or 1080p, is the right file.
         The original 4K upload can stay on X.
 
@@ -65,7 +66,7 @@
 
         <div class="setting-photos" id="traditional-bezel-photos" tabindex="-1">
           <figure class="photo photo-main">
-            <video class="setting-video" controls playsinline preload="metadata">
+            <video class="setting-video" autoplay muted playsinline controls preload="metadata">
               <source src="images/traditional-bezel/lab-alex.mp4" type="video/mp4">
             </video>
             <figcaption>Lab Alex traditional bezel.</figcaption>
