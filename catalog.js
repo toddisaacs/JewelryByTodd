@@ -86,13 +86,13 @@
       var detail = document.createElement("dd");
       term.textContent = legend ? legend.textContent.trim() : "";
 
-      var rhodium = fieldset.querySelector('input[name="rhodium"]');
-      if (rhodium) {
-        detail.textContent = rhodiumText(rhodium);
-        if (!rhodium.disabled && rhodium.checked) {
-          var rhodiumPrice = parseAmount(rhodium.dataset.price);
-          if (rhodiumPrice === null) incomplete = true;
-          else adders += rhodiumPrice;
+      var addon = fieldset.querySelector('input[type="checkbox"]');
+      if (addon) {
+        detail.textContent = addon.name === "rhodium" ? rhodiumText(addon) : (addon.checked ? "Yes" : "No");
+        if (!addon.disabled && addon.checked) {
+          var addonPrice = parseAmount(addon.dataset.price);
+          if (addonPrice === null) incomplete = true;
+          else adders += addonPrice;
         }
       } else {
         var checked = fieldset.querySelector("input:checked");
