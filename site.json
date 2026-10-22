@@ -4,5 +4,8 @@
   "description": "Handmade by Todd",
   "intro": "Handmade jewelry, made to order. All settings are made from scratch, and all stones are set by hand. Prices are for the setting only.",
   "skip": "Skip to the setting",
-  "footer": " "
+  "footer": " ",
+  "flags": {
+    "laser": false
+  }
 }

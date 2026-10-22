@@ -89,6 +89,37 @@
           "detail": "Stacked rings where the bezel meets the shank."
         }
       ]
+    },
+    {
+      "name": "Finish",
+      "field": "finish",
+      "choices": [
+        {
+          "name": "High polish",
+          "value": "high-polish",
+          "price": 0,
+          "detail": "Bright, reflective metal.",
+          "selected": true
+        },
+        {
+          "name": "Antique",
+          "value": "antique",
+          "price": 0,
+          "detail": "Dark in the grooves, so the detail has contrast. Left unplated."
+        }
+      ]
+    },
+    {
+      "name": "Rhodium plate",
+      "field": "rhodium",
+      "rule": "Rhodium plate can be added to high polish. Antique is left unplated.",
+      "addon": { "name": "Add rhodium plate", "value": "yes", "price": 50 }
+    },
+    {
+      "name": "Laser engrave",
+      "field": "engrave",
+      "flag": "laser",
+      "addon": { "name": "Add laser engrave", "value": "yes", "price": 25 }
     }
   ],
   "fingerSize": "Finger size is required with every order. Ask for it when the setting is written down.",

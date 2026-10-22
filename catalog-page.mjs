@@ -4,13 +4,13 @@ const STERLING_DENSITY = 10.36;
 const GOLD_DENSITY = { 14: 13.07, 18: 15.58 };
 const VIDEO = new Set(["mp4", "webm"]);
 const PHOTO = new Set(["jpg", "jpeg", "png", "webp"]);
-const SITE_FIELDS = ["name", "tagline", "description", "intro", "skip", "footer"];
+const SITE_FIELDS = ["name", "tagline", "description", "intro", "skip", "footer", "flags"];
 const SETTING_FIELDS = [
   "id", "title", "order", "lede", "grams", "hours", "rate", "weightNote",
   "stone", "about", "points", "media", "priceNote", "options",
   "fingerSize", "leadTime", "open",
 ];
-const GROUP_FIELDS = ["name", "field", "rule", "choices", "addon"];
+const GROUP_FIELDS = ["name", "field", "rule", "flag", "choices", "addon"];
 const CHOICE_FIELDS = ["name", "value", "price", "detail", "selected", "metal", "karat"];
 const ADDON_FIELDS = ["name", "value", "price", "detail"];
 const MEDIA_FIELDS = ["file", "caption", "alt"];
@@ -95,13 +95,26 @@ export async function loadSite() {
   const site = JSON.parse(await readFile(file, "utf8"));
   unknownKeys(file, site, SITE_FIELDS);
   for (const key of SITE_FIELDS) {
-    if (key === "footer") continue;
+    if (key === "footer" || key === "flags") continue;
     needString(file, site, key);
   }
   if (site.footer == null) site.footer = "";
   if (typeof site.footer !== "string") fail(file, "footer needs text.");
   site.footer = site.footer.trim();
+  site.flags = flagsOf(file, site.flags);
   return site;
+}
+
+function flagsOf(file, flags) {
+  if (flags == null) return {};
+  if (typeof flags !== "object" || Array.isArray(flags)) fail(file, "flags needs on or off switches.");
+  const parsed = {};
+  for (const name of Object.keys(flags)) {
+    if (!/^[a-z][a-z0-9-]*$/.test(name)) fail(file, `flag ${name} needs a short name like laser.`);
+    if (typeof flags[name] !== "boolean") fail(file, `flag ${name} needs true or false.`);
+    parsed[name] = flags[name];
+  }
+  return parsed;
 }
 
 async function listedMedia(file, dir, media) {
@@ -173,6 +186,7 @@ function optionsOf(file, options) {
     if (fields.has(field)) fail(file, `${field} is used on two options.`);
     fields.add(field);
     const rule = optionalString(file, group, "rule");
+    const flag = optionalString(file, group, "flag");
     const hasChoices = group.choices != null;
     const hasAddon = group.addon != null;
     if (hasChoices === hasAddon) fail(file, `${name} needs choices or one addon.`);
@@ -186,7 +200,7 @@ function optionsOf(file, options) {
         price: needNumber(file, group.addon, "price"),
         detail: optionalString(file, group.addon, "detail"),
       };
-      return { name, field, rule, choices: null, addon };
+      return { name, field, rule, flag, choices: null, addon };
     }
 
     if (!Array.isArray(group.choices) || group.choices.length === 0) {
@@ -200,7 +214,7 @@ function optionsOf(file, options) {
       const silver = choices.filter((choice) => choice.silver);
       if (silver.length !== 1) fail(file, "Metal needs one sterling silver choice.");
     }
-    return { name, field, rule, choices, addon: null };
+    return { name, field, rule, flag, choices, addon: null };
   });
   if (metalGroups !== 1) fail(file, "options needs one Metal group.");
   return groups;
@@ -406,8 +420,19 @@ function prepare(setting) {
   return setting;
 }
 
-function articleHtml(setting) {
+function offeredOptions(setting, site) {
+  return setting.options.filter((group) => {
+    if (!group.flag) return true;
+    if (!Object.hasOwn(site.flags, group.flag)) {
+      fail(`${setting.dir}/setting.json`, `flag "${group.flag}" is not in site.json.`);
+    }
+    return site.flags[group.flag] === true;
+  });
+}
+
+function articleHtml(setting, site) {
   prepare(setting);
+  const options = offeredOptions(setting, site);
   const id = setting.id;
   const grams = formatGrams(setting.grams);
   const gold = goldFallback(setting);
@@ -470,12 +495,12 @@ ${points}
 
           <form class="options" id="${esc(id)}-options" tabindex="-1" data-base="" data-grams="${esc(grams)}" action="#">
             <p class="price-note">${esc(setting.priceNote)}</p>
-${setting.options.map((group) => fieldsetHtml(setting, group)).join("\n\n")}
+${options.map((group) => fieldsetHtml(setting, group)).join("\n\n")}
 
             <div class="readback">
               <h3>Selected options</h3>
               <dl class="readback-list">
-${readbackHtml(setting.options)}
+${readbackHtml(options)}
               </dl>
               <div class="readback-total">
                 <span>Total</span>
@@ -513,7 +538,7 @@ export function renderPage(template, site, settings) {
               <span class="index-open">Open</span>
             </a>
           </li>`).join("\n"),
-    articles: settings.map((setting) => articleHtml(setting)).join("\n\n"),
+    articles: settings.map((setting) => articleHtml(setting, site)).join("\n\n"),
   };
   let html = template;
   for (const [key, value] of Object.entries(replacements)) {

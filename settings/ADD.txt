@@ -6,6 +6,8 @@ To add a photo or a video, put the file in that setting's folder and add it unde
 
 To add an option, add a choice under that option. price 0 means it is included. An addon is a checkbox. The finish value antique turns off the addon whose field is rhodium.
 
+Laser engrave is written on the setting, then held by the laser flag in site.json. Set "laser" to true when it should show. While it is false, the option is left off the page.
+
 grams is the finished sterling weight. hours and rate are the labor for that setting. The page uses them to price the metal and does not show them.
 
 Push the folder to GitHub. The publish build writes the page.

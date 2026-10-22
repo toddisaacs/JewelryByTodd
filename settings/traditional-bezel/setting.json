@@ -89,6 +89,7 @@
     {
       "name": "Laser engrave",
       "field": "engrave",
+      "flag": "laser",
       "addon": { "name": "Add laser engrave", "value": "yes", "price": 25 }
     }
   ],
