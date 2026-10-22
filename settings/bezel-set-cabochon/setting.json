@@ -6,7 +6,7 @@
   "grams": 2.5,
   "hours": 6,
   "rate": 30,
-  "weightNote": "For the thin half-round shank. Working weight, until a finished ring is weighed.",
+  "weightNote": "For the light shank. Working weight, until a finished ring is weighed.",
   "stone": "Cabochons, including ovals and less regular shapes. Faceted stones use the traditional bezel.",
   "about": [
     "This setting holds a cabochon in a low bezel. A metal rim follows the outline of the stone and protects the edge. The ring stays low on the hand. The shape can follow an oval or a less regular cabochon."
@@ -28,18 +28,18 @@
   "media": [
     {
       "file": "canteraOpal.jpeg",
-      "alt": "An irregular oval cantera opal cabochon in a low silver bezel, with decorative rings on the shoulder, on a black display stand.",
-      "caption": "Cantera opal, with decorative shoulders."
+      "alt": "An irregular oval cantera opal cabochon in a low silver bezel on a light shank, with decorative rings on the shoulder, on a black display stand.",
+      "caption": "Cantera opal on a light shank, 2.95 mm wide and 1.5 mm thick, with decorative shoulders."
     },
     {
       "file": "AzuriteWithShoulders.jpeg",
-      "alt": "An oval blue and green azurite cabochon in a low silver bezel, with decorative rings where the bezel meets the half-round shank.",
+      "alt": "An oval blue and green azurite cabochon in a low silver bezel, with decorative rings where the bezel meets the shank.",
       "caption": "Azurite, with decorative shoulders."
     },
     {
       "file": "SimpleBezel2.jpeg",
-      "alt": "Two low silver bezel rings on dark wood, one with a red cabochon and one with a blue cabochon, both on plain half-round shanks.",
-      "caption": "Plain half-round shanks. This is the baseline for the weight."
+      "alt": "Two low silver bezel rings on dark wood, one with a pink cabochon and one with a blue cabochon, both on heavy shanks.",
+      "caption": "Pink and blue cabochons on heavy shanks, 3.5 mm wide and 2.25 mm thick."
     }
   ],
   "priceNote": "This is an estimate based on the design and the metal weight. Prices fluctuate with the metal price, the size of the piece, and the options.",
@@ -58,17 +58,17 @@
       "field": "shank",
       "choices": [
         {
-          "name": "Half-round",
-          "value": "half-round",
+          "name": "Light",
+          "value": "light",
           "price": 0,
-          "detail": "Thin half-round band. The sterling weight is for this shank.",
+          "detail": "3 mm or less wide, about 1.5 mm thick. The sterling weight is for this shank.",
           "selected": true
         },
         {
-          "name": "Wide flat",
-          "value": "wide-flat",
+          "name": "Heavy",
+          "value": "heavy",
           "price": 10,
-          "detail": "A wider, flat band."
+          "detail": "Wider than 3 mm, about 2 mm thick."
         }
       ]
     },
@@ -95,7 +95,7 @@
   "fingerSize": "Finger size is required with every order. Ask for it when the setting is written down.",
   "leadTime": "The setting is made to order once the stone is chosen. Allow 2 weeks for fabrication.",
   "open": [
-    "Weigh a finished silver ring with the thin half-round shank. It is 2.5 g for now.",
+    "Weigh a finished silver ring with the light shank. It is 2.5 g for now.",
     "Weigh the first gold ring to confirm the estimate."
   ]
 }

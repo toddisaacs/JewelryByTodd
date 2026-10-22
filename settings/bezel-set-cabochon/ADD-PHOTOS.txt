@@ -1,8 +1,8 @@
 Bezel Set Cabochon photos.
 
-canteraOpal.jpeg            main view, decorative shoulders
+canteraOpal.jpeg            light shank, 2.95 mm wide and 1.5 mm thick, decorative shoulders
 AzuriteWithShoulders.jpeg   azurite, decorative shoulders
-SimpleBezel2.jpeg           plain half-round shanks, the baseline for the weight
+SimpleBezel2.jpeg           heavy shanks, 3.5 mm wide and 2.25 mm thick, pink and blue stones
 
 The page uses photos for this setting. To add another still, put the JPG or JPEG in this folder and add it under media in setting.json.
 
