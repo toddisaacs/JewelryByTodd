@@ -1,16 +1,9 @@
-The traditional bezel already has its media.
+Bezel Set Cabochon photos.
 
-Main view: lab-alex.mp4
-This is a 1080p copy of the Lab Alex clip, about 12 MB. The page shows that file in a video player. The original post is still at
-https://x.com/JewelryByTodd/status/2108680465028665771
+canteraOpal.jpeg            main view, decorative shoulders
+AzuriteWithShoulders.jpeg   azurite, decorative shoulders
+SimpleBezel2.jpeg           plain half-round shanks, the baseline for the weight
 
-Stills already on the page:
-IMG_4322.jpeg   front of the setting
-IMG_4321.jpeg   side view, rope edge and band
+The page uses photos for this setting. To add another still, put the JPG or JPEG in this folder and add it under media in setting.json.
 
-A photo around 2 MB is a normal size. A video around 10–15 MB is a normal size. The published catalog can hold up to 1 GB total. One file must stay under 100 MB, and GitHub warns above 50 MB.
-
-To add another still, put the JPG or JPEG in this folder and add it under media in setting.json.
-To add another video, put an mp4 in this folder and add it under media in setting.json. A smaller copy can be saved here from an X link. Leave the original 4K file off the site.
-
-The share link for this setting is the catalog address plus #traditional-bezel.
+The share link for this setting is the catalog address plus #bezel-set-cabochon.
