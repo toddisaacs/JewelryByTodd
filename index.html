@@ -98,8 +98,8 @@
             <div>
               <dt>Approximate finished weight</dt>
               <dd>
-                2.5 g in sterling silver. 3.5 g in gold.
-                <p class="sample">Working weights. These will be measured on a finished ring.</p>
+                2.5 g in sterling silver. About 3.2 g in 14k gold, and about 3.8 g in 18k gold.
+                <p class="sample">The silver weight will be measured on a finished ring. The gold weights are for a ring the same size, until one is made in gold.</p>
               </dd>
             </div>
             <div>
@@ -109,8 +109,23 @@
           </dl>
 
           <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="225" action="#">
-            <p class="price-note">Included is part of the $225 sterling price: no skirt, and high polish. The total stays blank if antique is selected, because that add-on is not set.</p>
+            <p class="price-note">Included is part of the $225 sterling price: no skirt, and high polish. 14k gold is $525 and 18k gold is $675. Those gold prices are estimates until a gold ring is made. The total stays blank if antique is selected, because that add-on is not set.</p>
 
+            <!--
+              Gold quote formula for this setting, figured 22 Oct 2026.
+              Spot used: gold $4,095/oz, silver $56.40/oz. 1 troy oz = 31.1035 g.
+              Making charge = sterling price minus the silver in it.
+              This ring: 2.5 g sterling is about $4 of silver, so the making charge is $221.
+              Finished gold grams = sterling grams × (density ÷ 10.36).
+              14k yellow is 13.07, about 3.2 g. 18k yellow is 15.58, about 3.8 g.
+              Fine gold grams = finished gold grams × 1.20 × (karat ÷ 24).
+              The 1.20 covers dust and filings that will not be refined.
+              Metal cost = fine gold grams × (gold spot ÷ 31.1035).
+              Quote = making charge + metal cost, rounded up to the next $25.
+              14k comes out about $511, quoted at $525, so the add-on is $300.
+              18k comes out about $666, quoted at $675, so the add-on is $450.
+              A $100 move in the gold spot changes this ring by about $7 in 14k and $11 in 18k.
+            -->
             <fieldset>
               <legend>Metal</legend>
               <label class="choice">
@@ -121,12 +136,20 @@
                 <span class="choice-price">$225</span>
               </label>
               <label class="choice">
-                <input type="radio" name="metal" value="gold" data-price="90">
+                <input type="radio" name="metal" value="gold-14k" data-price="300">
                 <span class="choice-text">
-                  <span class="choice-name">Gold</span>
-                  <span class="choice-detail">Corresponding price for 3.5 g, scaled from the silver price. $315 in gold. Karat is not set yet.</span>
+                  <span class="choice-name">14k gold</span>
+                  <span class="choice-detail">Estimate, about 3.2 g finished. $525 in 14k.</span>
                 </span>
-                <span class="choice-price">+$90</span>
+                <span class="choice-price">+$300</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="metal" value="gold-18k" data-price="450">
+                <span class="choice-text">
+                  <span class="choice-name">18k gold</span>
+                  <span class="choice-detail">Estimate, about 3.8 g finished. $675 in 18k.</span>
+                </span>
+                <span class="choice-price">+$450</span>
               </label>
             </fieldset>
 
@@ -212,8 +235,8 @@
           <section class="confirm" aria-labelledby="traditional-bezel-confirm">
             <h3 id="traditional-bezel-confirm">Still to fill in</h3>
             <ul>
-              <li>Confirm the finished weight. Working figures are 2.5 g in sterling silver and 3.5 g in gold.</li>
-              <li>Gold karat</li>
+              <li>Weigh a finished ring. Sterling is a working 2.5 g. Gold estimates are about 3.2 g in 14k and 3.8 g in 18k.</li>
+              <li>Confirm the gold prices after the first gold ring. Working quotes are $525 in 14k and $675 in 18k.</li>
               <li>Antique finish add-on, if there is one</li>
             </ul>
           </section>
