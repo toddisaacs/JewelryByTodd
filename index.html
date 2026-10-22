@@ -113,7 +113,7 @@
           </dl>
 
           <form class="options" id="traditional-bezel-options" tabindex="-1" data-base="" data-grams="2.5" action="#">
-            <p class="price-note">Included is part of the sterling price: no skirt, and high polish. The price shown is the price at the time of the order. It follows the metal price. The total stays blank if antique is selected, because that add-on is not set.</p>
+            <p class="price-note">Included is part of the sterling price: no skirt, high polish, and antique. The price shown is the price at the time of the order. It follows the metal price.</p>
             <fieldset>
               <legend>Metal</legend>
               <label class="choice">
@@ -177,12 +177,12 @@
                 <span class="choice-price">Included</span>
               </label>
               <label class="choice">
-                <input type="radio" name="finish" value="antique">
+                <input type="radio" name="finish" value="antique" data-price="0">
                 <span class="choice-text">
                   <span class="choice-name">Antique</span>
-                  <span class="choice-detail">Darkened finish. Left unplated. The add-on is not set yet.</span>
+                  <span class="choice-detail">Dark in the grooves of the skirt, so the skirt has contrast. Left unplated.</span>
                 </span>
-                <span class="choice-price">Not set</span>
+                <span class="choice-price">Included</span>
               </label>
             </fieldset>
 
@@ -225,7 +225,6 @@
             <ul>
               <li>Weigh a finished silver ring and set the grams in the page. It is 2.5 g for now.</li>
               <li>Weigh the first gold ring to confirm the estimate.</li>
-              <li>Antique finish add-on, if there is one</li>
             </ul>
           </section>
         </div>
@@ -237,6 +236,7 @@
     </footer>
   </div>
 
-  <script src="catalog.js"></script>
+  <!-- catalog.min.js is made from catalog.js. Regenerate it after editing the source. -->
+  <script src="catalog.min.js"></script>
 </body>
 </html>
